@@ -1,0 +1,443 @@
+intalled virtualbox on fedora using: https://computingforgeeks.com/how-to-install-virtualbox-on-fedora-linux/
+Archlinux website: https://archlinux.org/
+downloaded torrent from archlinux: https://archlinux.org/releng/releases/2022.01.01/torrent/
+from the Arch linux download page: https://archlinux.org/download/
+Extracted iso from torrent using transmission
+Opened The virtualbox application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+created a new virtual machine
+-       Name: arch_linux
+-       location: "${HOME}/VirtualBox VMs"
+-       Type: Linux
+-       Version: arch linux (64-bit)
+-       RAM: 4096
+-       Hard disk: Create a virtual hard disk now
+-       disk image: VDI (VirtualBox Disk Image)
+-       storage type: Dynamically allocated
+-       virtual hard isk info:
+        *       location: "${HOME}/VirtualBox VMs/arch_linux/arch_linux.vdi"
+        *       size: 20GB
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Virtual machine has been created
+Settings
+    System
+        Processor
+            Processor(s): 2CPUs
+        Motherboard
+            (enabled): Enable EFI (Special OSes only)
+    Display
+        Screen
+            Video Memory : 128MB
+            (enabled): Enable 3D Acceleration
+    Storage:
+        Controller: IDE
+                    Add disk: (add the system iso) [iso name: archlinux-2022.01.01-x86_64.iso]
+                        Method to add an iso:
+                               click on the cd with a + (located next to the text "Controller: IDE"
+                               In the windw that just opened click the disk icon with a + (text bellow the icon "Add")
+                               In the new pop-up, locate your iso image, click on it, then click the open button on the top right of the window
+                               in the previous window "<name_of_your_wm> - Optical Disk Selector" click the "Choose" button (bottom right)
+                               back in the "Settings" window, you should now see a new disk appear with the name of the iso file on it
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We have now left the settings page by clicking ok (bottom right of the page)
+click the start button (green arrow, top of the vm info display)
+Reading a few of the messages that appeared in the vm window
+for this, pressed the ctrl key on the right the the "p" key (pause the machine)
+read the messages
+did right key ctrl+p
+chose the first option of the boot menu of archlinuxes installation screen
+let it start up: waited for it to display :
+    Arch Linux 5.15.12-arch1-1 (tty1)  <that is my version, it may very depending on your iso>
+    \n
+    archiso login: root (automatic login)
+    \n
+    To install Arch Linux <Arch Linux is in sky blue> follow the installattion guie:
+    https://wiki.archlinuw.org/title/Installation_guide
+    \n
+    For Wi-Fi, authenticate to the wireless network using the iwctl <iwctl is in a purpully pink> utility.
+    For mobile broadband (WWAN) modems, connect with the mmcli <mmcli is in purpully pink> utility.
+    Ethernet, WLAN and WWAN interfaces using DHCP should work automatically.
+    \n
+    After connecting the internet, the installation guide can be accessed
+    via the convenience script Installation_guide <Installation_guide is in purpully pink>
+    \n
+    root@archiso ~ #
+    <root is in red, the ~ is high, \n indicate an empy line>
+
+Went to the Archlinux installation guide: https://wiki.archlinux.org/title/Installation_guide
+Read the guide
+-    need to know how to do for epitech project:
+while reading the epitech pdf, realised that I got a few things wrong, so
+I turned off Archlinux: (command: "sudo systemctl poweroff")
+!!!!!! Remember, your keyboar is a querty in the default boot up of archlinux !!!!!!!!!
+
+When the system has powerd off
+open the settings panel:
+in:
+    General
+        Name: change "arch_linux" to "B2_Boot1"
+    System
+        Base Memory: 1000 MB (or 1GB)
+    Storage
+        Controller: SATA
+                    click on the hard_drive logo with the name "arch_linux.vdi"
+                    click the remove button (when hovered displays: Remove selected Storage attachment)
+                    Now click the hard drive logo with a + on it (it is next to the Controller: SATA (disk image with a +))
+                    In the new window, click the hard drive with a circle on it and the text "Create" under it
+                    In the new window choose:
+                       VDI for the disk file type
+                       click next
+                       Dynamically allocated for the storage on the physical hard disk
+                       click next
+                       you can leave the path as is
+                       "${HOME}/VirtualBox VMs/arch_linux/arch_linux_1.vdi"
+                       of change it to:
+                       "${HOME}/VirtualBox VMs/arch_linux/B2_Boot1.vdi"
+                       <the ${HOME} is just a way for me to make the path esier to understand, in the window it will be the full path starting from your root "/">
+                       For the size of the hard disk (slider bellow the path) change it from 8 to 10GB
+                       click create
+                       once back in the Hard Disk Selector, your disk (of 10.00GB) should be located under the Not Attached section, select it
+                       click the choose button on the bottom right of the window                       
+you can now click ok on the bottom right of the settings page
+You can now start arch linux with the start button
+in the boot menu, choose the first option
+wait for it to finish booting and to display the basic greeting message accompanied by "root@archiso ~ #" prompt, <root being in red>
+
+/!\ When you are in this mode, nothing is saved for the moment so if you boot off archlinux, everything will be lost /!\
+This is usefull if you messed up
+
+Before looking at the epitech requirements, lets configure a few things to ease the installation process
+the following commands can be found in the arch linux installation guide:
+Tip: To help you type if your keyboard is non qwerty, pull up a an image of a qwerty keyboard layout on your phone, this could help you locate the required letters.
+
+Tip 2: if ever you misspell a command, press the up arrow key to call back the last command and use the left and right arrows to move through it.
+
+keyboard: (going from quwerty to azerty)
+          loadkeys fr-latin1 (for the french azrty layout)
+          for other azerty layouts type:
+          loadkeys <you_country_name_abreviation(fr,de,it, etc>-latin1
+wifi:    (connect your wifi)
+         try:
+            ping google.com
+            if packets a being recieved then, you are connected to the internet
+            to cut the ping do: left key ctrl+c
+            PS: a paquet reception looks like this: 64 bytes from par21s04-in-f14.1e100.net (216.58.213.174): icmp_seq=1 ttl=63 time=4.04 ms
+            a paquet should take less than a second to be displayed
+            if your are not sure that you are receiving pakets, try ping google.com (or ping <another_websites_domain>) on your computer (not the vm)
+         if this failes:
+            run : ip link
+            then try to ping again
+         if this failes, refer to the wiki (ip-link(8)): https://man.archlinux.org/man/ip-link.8
+         PS: in a vm, for internet to work, your computer running the vm must be connected to the internet
+
+update the system clock:
+       to check the current clock info, type: timedatectl
+       if your clock is not up to date, use man timedatectl (for now)
+       timedatectl set-ntp true
+
+usefull to know:
+list recognised disks:
+     fdisk -l
+Before we enter the epitech requirements, lets just try to install arch using this tutorial (from 4:09 :  https://youtu.be/PQgyW10xD8s)
+command 1:
+    show the keyboard options: ls /usr/share/kbd/keymaps/**/*.map.gz
+command 2: 
+    show the same thing, but break the content down to the size of the terminal:
+        ls /usr/share/kbd/keymaps/**/*.map.gz | less
+command 3:
+    load a different keyboard layout:
+        loadkeys fr-latin1
+command 4:
+    clearing the screen:
+        clear
+command 5:
+    Make sure internet is up and running:
+        ping google.com
+command 6:
+    Kill the ping:
+        left ctrl + c
+command 7:
+    make sure the system clock is accurate:
+        timedatectl set-ntp true
+command 8:
+    checkin the cuurrent system clock info:
+        timedatectl status
+command 9:
+    listing all available drives:
+        fdisk -l
+command 10:
+    creating a disk:
+        fdisk /dev/sda 
+command 10.1:
+    asking for help in the fdisk command:
+        in the prompt: "Command (m for help):" m
+command 10.2:
+    creating a gpt partition:
+        in the prompt "Command (m for help):" g
+    But epitech wants a dos partition so we will type o instead of g.
+command 10.3:
+    asking for help again:
+        in the prompt "Command (m for help):" m
+command 10.4:
+    adding a new parition:
+        in the prompt "Command (m for help):" n
+command 10.4.1:
+    detailing the info for the parition:
+        this is if you followed the g command:
+            in the prompt "Parition number (1-128, default 1):"  1
+            in the prompt "First sector ([...], default [...]):" [ENTER key]
+            in the propmpt "Last sector, +/~sectors or +/~size[...], default [...]):" +550M
+        this is if you followed the o command:
+            # This current setup is almost right, except that root is an ext4 and that home is at the end, so, these ifs will remain as examples of the process.
+            There are two different options for the root and the home partitions, either primary (p) (once done, cannot be split, 3 primary partitionnings will still be available) or extended (e) (unlimited, can be repartitionned later on)
+                personnally I will make the root a primary and the home an extended, because we will do a lot more in the home than the root.
+                If you choose p:
+                    you will then need to asign it to a number (in my case it will be 1)
+                    this will be done in the "Partition number (1-4, default 1):" 1
+                    then in the question "First sector (2048-[...], default 2048):" [ENTER key]
+                    then in the question "Last sector, +/~sectors or +/size{K,M,G,T,P} (2048-[...], default [...]):" +5G
+                    once done, the line should be: "Created a new parition 1 of type 'Linux' and of size 5GiB"
+                If you choose e:
+                    you will then need to assign it to a number (in my case it will be 2)
+                    this will be done in the "Partition number (2-4, default 2):" 2
+                    then in the question "First sector (10487808-[...], default 10487808):" [ENTER key]
+                    then in the question "Last sector, +/~sector or +/~size{K,M,G,T,P} (10487808-[...], default [...]):"+4G
+                    once done, the line should be: "Created a new partition 2 of type extended and of size 4 GiB"
+
+                Info: It looks like you can do a maximum of 4 paritions in the current setup.
+            # Here is the correct setup, no ifs this time, just input lines
+            legend:
+                CL = The default prompt to ask for help or other things
+                PT = partition type
+                PN = Partition number
+                FS = First sector
+                LS = Last sector
+                CR = Messages saying that partitions were sucessefully created.
+            if you followed the two ifs up there:
+                CL: d
+                PN (1,2) <these are the 2 partitions we had created>: 1
+                CR: "Partition 1 has been deleted"
+                CL: d
+                PN displays "Selected partition 2" (because there are no other partitions, otherwise it would of prompted us)
+                CR: "Partiton 2 has been deleted"
+                TP: Change the partition type (extended, swap (physical temp memory area), ext4, ext2) this is the t letter to be entered in front of "Command (m for help);"
+                TPC: TP code (L = list types, ext = 05, swap = 82)
+                TPM: TP message
+            if you did not follow the two ifs up there or used the first if to do a rollback (revert the changes you made)
+                CL: n
+                PT: p
+                PN: 1
+                FS: [ENTER key]
+                LS: +5G
+                CR: "Created a new partition 1 of type 'Linux' //'Extended' and of size 5 GiB"
+                /*CL: t
+                //TP: 1 We will not edit this yet, because fdisk is unable to format this the types we need so it is staying on the default linux format, w will use mkfs for further formating.
+                TPC: 05
+                TPM: "Changed type of partition 'Linux' to 'Extended'."*/
+                CL: n
+                PT: p
+                PN: 2
+                FS: [ENTER key]
+                LS: +500M
+                CR: "Created a new partition 2 of type 'Linux' and of size 500MiB."
+                CL: t // This one can be edited because we are assining it as a swap (physical temp memory)
+                TP: 2
+                TPC: 82
+                TPM: "Changed type of partition 'Linux' to 'Linux swap / Solaris'."
+                CL: n
+                PT: p
+                PN: 3
+                FS: [ENTER key]
+                LS: +500M
+                CR: "Created a new partition 3 of type 'Linux' and of size 500MiB."
+                /*CL: t// We will not edit this yet, because fdisk is unable to format this the types we need so it is staying on the default linux format, w will use mkfs for further formating.
+                TP: 3
+                TPC: 05*/
+                CL: n
+                PT: p
+                PN: 4// no prompt because it is the last sector available
+                FS: [ENTER key]
+                LS: +4G
+                CR: "Created a new partition 4 of type 'Linux' and of size 4 GiB."
+                /*CL: t// We will not edit this yet, because fdisk is unable to format this the types we need so it is staying on the default linux format, w will use mkfs for further formating.
+                TP: 4
+                TPC: 05*/
+            To try to solve the problem, looking at the man of fdisk.
+
+            Tip: If ever you mess up, in the default menu ("Command (m for help):") type o to create a new dos table, thus overiting any previous table that was present.
+            Tip 2: If you enter into the menu of an option you did not wish to (d for example (to remove a partition)) just press the left key ctrl+c
+                    /!\ If you entered into the expert mode per accident, (the x option) your only way out is to enter (the r option) to in the line "Epert command (m for help):" to return to the previous menu.
+
+            once you are satisfied with your choices, you can enter w to save your changes, otherwise enter q to exit without changing the disk.
+            if you used w, you will recieve this message: 
+                "The partition table has been altered."
+                "Calling ioctl() to re-read partition table."
+                "Syncing disks"
+            The tutorial video now ends (for the moment, I am now following: https://linuxhint.com/use-fdisk-format-partition/) to properly partition the disk, if you have not used the DOS formatting, feel free to continue the video but for you, I think that this tutorial ends here.
+following The website for those who have used the DOS formatting (Required by epitech):
+    we will now work on partition 1:
+        for this follow the following commands:
+            Specifications:
+                size of partition: 5GiB (no need to touch)
+                Format: Linux (needs to be ext4)
+                --> mkfs.ext4 = change the formating of a partition to ext4
+                usage: mkfs.ext4 <partition_label>
+                in current situation: mkfs.ext4 ./dev/sda1
+                result:
+                    "mke2fs 1.46.4 (18-Aug-2021)"
+                    "Creating filesystem with 1310720 4k blocks and 327680 inodes"
+                    "Filesystem UUID: fb3bf5ea-2f3b-4df5-a254-7e0e5c3d6fa9"
+                    "Superblock backus stored blocks:"
+                    "   32768, 98304, 163840, 229376, 294912, 819200, 884736"
+                    "\n"
+                    "Allocating group tables: done"
+                    "Writing inode tables: done"
+                    "Creating journal (16384 blocks): done"
+                    "Writing superblocks and filesystem accounting information: done"
+    partition 2 being in swap format, and it meeting its requirements does not need to be adressed.
+    we will now work on partition 3:
+        for this follow the following commands:
+            Specifications:
+                size of partition: 500MiB (no need to touch)
+                Format: Linux (needs to be ext2)
+                --> mkfs.ext2 = change the formating of a partition to ext2
+                usage: mkfs.ext2 <partition_label>
+                in current situation: mkfs.ext2 ./dev/sda3
+                result:
+                    "mke2fs 1.46.4 (18-Aug-2021)"
+                    "Creating filesystem with 512000 1k blocks and 128016 inodes"
+                    "Filesystem UUID: f2ef666a-e331-4740-942c-5a0ea63f92fa"
+                    "Superblock backus stored blocks:"
+                    "   8193, 24577, 40961, 57345, 73729, 204801, 221185, 401409"
+                    "\n"
+                    "Allocating group tables: done"
+                    "Writing inode tables: done"
+                    "Writing superblocks and filesystem accounting information: done"
+    we will now work on partition 4:
+        for this follow the following commands:
+            Specifications:
+                size of partition: 4GiB (no need to touch)
+                Format: Linux (needs to be ext4)
+                --> mkfs.ext4 = change the formating of a partition to ext4
+                usage: mkfs.ext4 <partition_label>
+                in current situation: mkfs.ext4 ./dev/sda4
+                result:
+                    "mke2fs 1.46.4 (18-Aug-2021)"
+                    "Creating filesystem with 1048576 4k blocks and 262144 inodes"
+                    "Filesystem UUID: a4bbe703-c4c0-4473-96f0-68bfa72e87e4"
+                    "Superblock backus stored blocks:"
+                    "   32768, 98304, 163840, 229376, 294912, 819200, 884736"
+                    "\n"
+                    "Allocating group tables: done"
+                    "Writing inode tables: done"
+                    "Creating journal (16384 blocks): done"
+                    "Writing superblocks and filesystem accounting information: done"
+    PS: the UUID will not be the same as the ones in the examples, but the superblock backups should be.
+
+command 11:
+    assigining the boot partition
+        cfdisk
+        in the menu choose the 500M disk (this is the second 500M disk) and the option bootable (bottom of the screen)
+        a star under the boot column should appear for the /dev/sda3
+        you can now exit the utility
+switchin to this website: https://phoenixnap.com/kb/arch-linux-install#ftoc-heading-8
+command 12:
+    create a filesystem for the swap using mkswap
+        mkswap /dev/sda2
+            "Setting up swapspace version 1, size = 500MiB (524283904 bytes)"
+            "no label, UUID=d0ce2f1b-1436-4e4c-a4da-9371dad6fc63"
+command 13:
+    Mount the Filesystem:
+        mount /dev/sda1 /mnt
+        swapon /dev/sda2
+
+        these commands will not return enything if no problem encountered.
+
+command 14:
+    Syncing pacman repositories:
+        pacman -Syy
+            you will these 3 packages sync:
+                :: Synchronizing package databases...
+                core
+                extra
+                community
+command 15:
+     Installing a reflector to update the mirror and sorts it by download speed:
+        pacman -S reflector
+            you will see more text appear on screen, (to lazy to copy it, just check the webiste under "Step 10: Check the Mirror List for an Appropriate Mirror").
+
+command 16:
+    create a backup of the mirror list
+        cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+
+command 17:
+    Using the reflector to update the mirror list
+        reflector -c "FR" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+        "FR" is the code of your country
+            The will be no ouput this command (this is if everything whent smoothly)
+
+command 18:
+    Install Arch Linux:
+        pacstrap /mnt base linux linux-firmware
+            a lot of text will be output.
+command 19:
+    Configure Arch Linux:
+        Generate the fstab File:
+            genfstab -U /mnt >> /mnt/etc/fstab
+                This command has no output
+command 20:
+    Configure the timezone:
+        if you do not know your current timezone code, you can enter:
+            timedatectl list-timezones
+            Tip: press the Q letter to exit the scroll-down list
+        once you have identified your code, you can type:
+            timedatectl set-timezone Time/Zone
+            for me it is:
+                timedatectl set-timezone Europe/Paris
+command 21:
+    set the locale:
+        The locale.gen file contains a list of all available locales. Open it and find the name of your preferred locale:
+            sudo nano /etc/locale.gen
+            uncomment (remove the # in front of the line) the character tables you need
+                The build of a line:
+                    if I take #br_FR.UTF-8
+                              ||  |  |_ corresponds to the norm of the table
+                              ||  |_ corresponds to the country
+                              ||_ corresponds to the language
+                              |_ is the symbol of the comment
+                    if I take #br_FR@euro ISO-8859-1
+                              | | | | |   |_ corresponds to the norm of the table
+                              | | | | |_ means that a specific part of the langage is taken into account (here the currency)
+                              | | | |_ means that it deals with a specific part of the language
+                              | | |_ corresponds to the coutry
+                              | |_ corresponds to the language
+                              |_ is the symbol 
+            for me it will be:
+                uncommented en_GB.UTF-8 UTF-8
+                commeted  en_US.UTF-8 UTF-8
+                uncommented fr_FR.UTF-8 UTF-8
+                uncommented fr_FR@euro ISO-8SO-8859-15
+            once you have found the keyboards you are interested in, type left CTRL + S to save then left CTRL + X to exit
+command 22:
+    Generate a locale configuration file
+        locale-gen
+            This command will set up your keyboard info.
+        echo [locale_name] > /etc/locale.conf
+
+
+
+
+/*Here are the epitech requirements and the command line to meet them
+
+Partition a hard drive:
+           fdisk /dev/the_disk_you_wish_to_partition         
+Identify peripheries:
+create an empty DOS partition table:
+    fdisk /dev/sda 
+    "Command (m for help):" o
+create a partition:
+    fdisk /dev/sda //(if you are not already in it)
+    n
+    parition type
+Assembling partitions:
+*/

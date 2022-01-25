@@ -1,0 +1,36 @@
+fdisk /dev/sda
+o
+n
+e
+1
+[ENTER]
++17G
+w
+cfdsik /dev/sda
+/dev/sda1
+	Free space
+New
+400M
+[ENTER]
+[DOWN Arrow]
+New
+9G
+[ENTER]
+[DOWN ARROW]
+New
+500M
+[ENTER]
+[DOWN ARROW]
+New
+5G
+[ENTER]
+[right arrow]
+[right arrow]
+[right arrow]
+[Enter]
+yes
+[ENTER]
+[LEFT ARROW]
+[LEFT ARROW]
+[LEFT ARROW]
+[ENTER]

@@ -1,0 +1,9 @@
+(hd0,msdos5) == ext2 | "./ ../ lost+found/ vmlinuz-linux initramfs-linux.img initramfs-linux-fallback.im drub/"
+(hd0,msdos6) == ext2 | "./ ../ lost+found/ boot/ var/ home/ dev/ run/ etc/ tmp/ sys/ proc/ usr/ bin lib lib64 mnt/" opt/ root/ sbin srv/
+(hd0,msdos7) == unknown | (there is nothing because it is empty [this is not a system message])
+(hd0,msdos8) == ext2 | "./ ../ lost+found/"
+(hd0,msdos9) == unknown | (there is nothing because it is empty [this is not a system message])
+(hd0,msdos10) == ext2 | "./ ../ lost+found/ boot/ home/ etc/ media/ vmlinuz.old var/ bin usr/ sbin lib lib32 lib64 libx32 dev/ proc/ root/ run/ sys/ tmp/ mnt/ srv/ opt/ .cache/ initrd.img.old vmlinuz initrd.img"
+(hd0,msdos11) == ext2 | "./ ../ lost+found/ hl/"
+(hd0,msdos12) == ext2 | "./ ../ lost+found/ config-5.10.0-10-amd64 vmlinuz-5.10.0-10-amd64 grub/ System.map-5.10.0-0-amd64 initrd.img-5.10.0-10-amd64"
+(hd0,msdos13) == unknown | (there is nothing because it is empty [this is not a system message])
