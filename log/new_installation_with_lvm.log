@@ -1,0 +1,413 @@
+Prerequirements:
+-   Have virtualbox
+-   Have an iso of Archlinux: https://archlinux.org/releng/releases/2022.01.01/torrent/
+-   Have an iso of Debian: https://www.debian.org/download
+-   Have an iso of Ubuntu Server: https://ubuntu.com/download/server
+
+I recommend you read the first installation log to learn a bit on how to use virtualbox;
+
+Creating 2 Virtual machines:
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    -   Machine 1:
+        * name: my-client_<your_name>
+        * type: Linux
+        * Version: Arch Linux (64-bit)
+        * Base Memory: 1000 MB
+        * Hard disk size: 30,5
+            ¤ 15 for Arch
+            ¤ 15,5 for Debian
+        * Boot Order:
+            1. Hard disk
+            2. Optical
+        * Extended Features:
+            ¤ (checked) Enable I/O APIC
+            ¤ (unchecked) Enable EFI (special OSes only)
+            ¤ (checked) Hardware Clock in UTC Time
+        * Processor(s): 2
+        * Storage:
+            Controller IDE:
+                archlinux iso
+            Controller SATA
+                my-client_<your_name>
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    -   Machine 2:
+        * name: my-web_<your_name>
+        * Type: linux
+        * Version: Ubuntu (64-bit)
+        * Base memory: 3000MB
+        * Boot Order:
+            ¤ Hard disk
+            ¤ Optical
+        * Extended Features:
+            ¤ (Enabled) Enable I/O APIC
+            ¤ (Disabled) Enable EFI (Special OSes only)
+            ¤ (Enabled) Hardware Clock in UTC Time
+        * Storage:
+            Controller IDE
+                Ubuntu server.iso
+            Controller: SATA
+                my-web_<your_name>.vdi
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Using tutorial : https://www.debugpoint.com/2020/12/xfce-arch-linux-install-4-16/
+
+In Machine 1:
+    start the machine
+    when prompted choose the first option
+    when bootup finished (you should see the line root@archiso ~ # <root is in red>)
+    enter: ping google.com
+    once you see that content is beng recieved, you can hit |lft CTRL] + C to stop the command.
+        A packet loosk like this:
+            64 byte from par21s19-in-f14.1e100.net (142.250.179.78): icmp_seq=1 ttl=63 time=5.74 ms
+    this allows you to check your connectivity
+    enter : show the keyboard options: ls /usr/share/kbd/keymaps/**/*.map.gz
+        to display the availble keyboards if you do not know the keyboard you want and that quwerty does not suit you.
+    add : | less to break the list to the size of your terminal.
+    enter : loadkeys fr-latin1 to change the keyboard layout
+    fr is the country of the layout
+
+    Tip: if you are lost while typing, you can pull up an image on your phone of a qwerty keyboard to help you out.
+    Tip 2: If the screen is to crowded, enter clear to clean it
+    Make sure the system clock is accurate: timedatectl set-ntp true
+    Display the current clock info: timedatectl status
+    If the timezone is incorrect, and you don't know the code for your country, enter : timedatectl list-timezones
+        Type Q to exit
+    The generic command to set the time is: timedatectl set-timezone Time/Zone
+    for me it is:
+        timedatectl set-timezone Europe/Paris
+    enter: timedatectl to display clock info
+    Available drives:
+        list available drives: fdisk -l
+    Partiton drive:
+        description:
+            CL = The default prompt to ask for help or other things
+            PT = partition type
+            PN = Partition number
+            FS = First sector
+            LS = Last sector
+            CR = Messages saying that partitions were sucessefully created.
+            TP: Change the partition type (extended, swap (physical temp memory area), ext4, ext2) this is the t letter to be entered in front of "Command (m for help);"
+            TPC: TP code (L = list types, ext = 05, swap = 82)
+            TPM: TP message
+        fdisk /dev/sda
+        CL: g
+        CR: "Created a new GPT disklabel (GUID: 289B7426-6803-1242-9747-0D9A1DA0E6E3)."
+        CL: n
+        PN: 1 //This will be the non journalized "boot" subpartition.
+        FS: [ENTER key]
+        LS: +400M
+        CR: "Created a new partition 1 of type 'Linux filesystem' and of size 400 MiB"
+        CL: n
+        PN: 2 //This will be the journalized "root" partition equivalent to "/"
+        FS: [ENTER key]
+        LS: +9G
+        CR: "Created a new partition 2 of type 'Linux filesystem' and of size 9GiB."
+        CL: t
+        TP: 2
+        TPC: 23 //Linux root (x86-64)
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux root (x86-64)'."
+        CL: n
+        PN: 3 //The "swap"
+        FS: [ENTER key]
+        LS: +500M
+        CR: "Created a new partition 3 of type 'Linux filesystem' and of size 500MiB."
+        CL: t
+        TP: 3
+        TPC: 19
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux swap'."
+        CL: n
+        PN: 4 //The "home"
+        FS: [ENTER key]
+        LS: +5G
+        CR: "Created a new partition 4 of type 'Linux filesystem' and of size 5GiB."
+        CL: t
+        TP: 4
+        TPC: 28
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux home'."
+        // Prepping the disk for the debian installation
+        CL: n
+        PN: 5 //This will be the non journalized "boot" subpartition.
+        FS: [ENTER key]
+        LS: +500M
+        CR: "Created a new partition 1 of type 'Linux filesystem' and of size 500 MiB"
+        CL: n
+        PN: 6 //This will be the journalized "root" partition equivalent to "/"
+        FS: [ENTER key]
+        LS: +10G
+        CR: "Created a new partition 2 of type 'Linux filesystem' and of size 10GiB."
+        CL: t
+        TP: 6
+        TPC: 23 //Linux root (x86-64)
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux root (x86-64)'."
+        CL: n
+        PN: 7 //The "swap"
+        FS: [ENTER key]
+        LS: +500M
+        CR: "Created a new partition 3 of type 'Linux filesystem' and of size 500MiB."
+        CL: t
+        TP: 7
+        TPC: 19
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux swap'."
+        CL: n
+        PN: 8 //The "home"
+        FS: [ENTER key]
+        LS: +4500M
+        CR: "Created a new partition 4 of type 'Linux filesystem' and of size 4.5GiB."
+        CL: t
+        TP: 8
+        TPC: 28
+        TPM: "Changed type of partition 'Linux filesystem' to 'Linux home'."
+        CL: w //exit applying changes to disk
+    list the disks: fdisk -l
+    formating the disks to the Appropriate format
+    mkfs.ext4 /dev/sda1
+    mtfs.ext4 /dev/sda5
+    mkfs.ext4 /dev/sda2
+    mkfs.ext4 /dev/sda6
+    mkswap /dev/sda3
+    mkswap /dev/sda7
+    swapon /dev/sda3
+    mount the disks:
+    mount /dev/sda2 /mnt
+    mkdir /mnt/boot /mnt/var /mnt/home
+    mount /dev/sda1 /mnt/boot
+    Installing arch_linux:
+        pacman -Syy
+        pacstrap /mnt base base-devel linux linux-firmware nano dhcpcd net-tools grub
+    Gnerating a table system:
+        genfstab -U /mnt >> /mnt/etc/fstab
+    setting up the base system:
+        arch-chroot /mnt
+        nano /etc/locale.gen
+        commeted (if wasn't) en_US.UTF-8 UTF-8 
+        uncommented fr_FR.UTF-8 UTF-8
+        uncommented fr_FR@euro ISO-8SO-8859-15
+    left  ctrl + s
+    left  ctrl + x
+    generating keymap:
+        locale-gen
+    setting up langage:
+        echo LANG=fr_FR.UTF-8 > /etc/locale.conf
+        export LANG=fr_FR.UTF-8
+    set the local_time_zone:
+        ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+    setting up the Hardware clock:
+        hwclock --systohc --utc
+    setting up the username:
+        echo my_client_<your_name>-pc > /etc/hostname
+        In my case:
+            echo my_client_henryletellier-pc > /etc/hostname
+    enabling the dhcpcd:
+        systemctl enable dhcpcd
+    setting up the root account:
+        passwd root (this is the password setter for the root account)
+    adding a new user:
+        useradd -m -g users -G wheel -s /bin/bash <account_name>
+    setting the passwd:
+        passwd <the_account_on_wich_you_wish_to_set_the_password>
+        in my case:
+            /*useradd -m -g users -G wheel -s /bin/bash test
+            passwd test*/
+            useradd -m -g users -G wheel -s /bin/bash romain
+            passwd romain
+            useradd -m -g users -G wheel -s /bin/bash henry
+            passwd henry
+            useradd -m -g users -G wheel -s /bin/bash leslie
+            passwd leslie
+    To add a user with full rights:
+        create an account:
+            useradd -m -g users -G wheel -s /bin/bash <account_name>
+            passwd <account_name>
+        open sudoers:
+            nano /etc/sudoers
+                in sudoers:
+                    write on a new line
+                    <account_name> ALL=(ALL) ALL
+                in my case:
+                    (just under the line: root ALL=(ALL) ALL)
+                    romain ALL=(ALL) ALL
+                    henry All=(ALL) ALL
+    How to show the existing accounts:
+        cat /etc/passwd | less
+
+    Installing grub:
+        grub-install /dev/sda
+        If it refuses to install:
+            grub-install /dev/sda --force
+        grub-mkconfig -o /boot/grub/grub.cfg
+        mkinitcpio -p linux
+        exit
+    preparing for reboot:
+        umount /mnt/boot
+        umount /mnt
+    rebooting:
+        reboot
+
+    Intermediate part: lets fix  few issues
+        logged in with the root account
+        I don't know why, but generally, when the machine boots up, the default keyboard stays US and has not changed to FR
+            go to your account
+                go into your bashrc
+                    add at the bottom of the file:
+                        sudo loadkeys fr-latin1
+                        add a new line
+                        save [left CTRL] + S
+                        exit [left CTRL] + X
+        Changing the langage from french to english:
+            select the langage from the list:
+                sudo nano /etc/locale.gen
+            generate a new lngge with:
+                sudo locale-gen
+                    Uncomment the langage you wish
+                        I uncommented en_GB.UTF-8 UTF-8
+            reboot
+                
+    
+    Part 2: installing XFCe in archinux
+        logged in with the root account.
+        Installing Xorg:
+            sudo pacman -S --needed xorg
+        Installing additional components and applications
+            sudo pacman -S --needed xfce4 mousepad parole ristretto thunar-archive-plugin thunar-media-tags-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-netload-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screensaver xfce4-taskmanager xfce4-wavelan-plugin xfce4-weather-plugin xfce4-whiskermenu-plugin xfce4-xkb-plugin file-roller network-manager-applet leafpad epdfview galculator lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings capitaine-cursors arc-gtk-theme xdg-user-dirs-gtk
+        Installing goodies because it could contain stuff that we did not install
+            sudo pacman -S --needed xfce4-goodies
+                There was more interresting stuff
+        Installing some compatibility helpers for communication between virtualbox and the computer
+            sudo pacman -S --needed virtualbox-guest-utils xf86-video-vmware
+        Enabeling the display manager and network manager as service so that they run on next login:
+            systemctl enable lightdm
+            systemctl enable NetworkManager
+        rebooting the system to apply changes:
+            reboot
+        For further requirements, run the config_users_env.sh in an adccount that has the same rights as root (a sudoer) but that is not root.
+    At this moment it is required to power off the machine.
+
+    How to make/import a safe copy of your virtual system :
+    It is recommended to (if using a virtual machine) to export a copy of your machine (for virtualbox it will be in the ova form and can be found when clicking on (Tools icon) Tools --> Export)
+        In the new window, choosing your virtual machine
+        clicking next
+        checking the box Include ISO image files
+            This will ensure that it can do a rollback more easally if needed.
+        clicking next
+        possibly adding info in the sections of the next window
+        and then clicking the export button.
+        wait for it to export and you now have a copy of your virtual machine
+    To import an instance of a machine, (if in virtualbox) it is going to (Tools icon) Tools --> import
+        In the window that just opened clicking the brown folder with a green arrow
+        clicking next
+        possibly checking the info on the next screen
+        clicking import
+        wait for it to import and you now have loaded into virtualbox an instance of your saved system.
+
+    Intermediate part , setting up Debian iso for boot:
+        go to Storage:
+        In Controller: IDE:
+            remove the current iso (into the iso)
+        click on the disk with a +
+        in the new window
+        click the disk with add to load a new iso (the debian one)
+        once the iso is loaded, go back to System
+            In Boot Order:
+                move (Optical above Hard Disk)
+                then close the settings window by clicking the ok button
+        Once done, start the VM, by clicking on the green arrow
+
+    Part 3:
+        Intalling debian as a dualboot (but it was using graphics, so forget this part)
+        
+            On the first boot up screen, choose the graphical install option
+            On the second window choose the langage of the debian system
+                For me it will be French
+                                with an azerty keyboard
+            On the next window, you will choose your geographical location
+                For the excersize it will be Shanghai
+                    For this, choose the option "Autre", click "Continuer"
+                    Then, choose "Asie", click "Continuer"
+                    Then, choose "Chine", click "Continuer"
+            This will lead the Debian software to ask you the keyboard character set.
+                For this excersize I will choose fr_FR.UTF-8
+            Then it will ask the keyboard layout.
+                For this excersize I will use "Français"
+            Let it do its work
+            The next window will ask for the name of the computer
+                For the excersize I will leave it as is.
+            Next The system will demand the domain name
+                I will use: 
+    Part 3 Debian (The non graphical installation version)
+        When booting the machine, choose the second option (The text is "Install")
+        This will lead you to an old-like window display (grey background on a blue border background)
+        On the main screen choose the french langage
+        On the second screen set your geographical location
+            If you are doing the epitech boot, choose "Autre"
+                The next window will ask for more detail on the the continent you are in (Africa, Asia, Europe, Indian ocean, etc)
+                For epitech, we will choose "Asie"
+                The next screen will display the coutrys of the given continent.
+                For epitech, we will choose "Chine"
+            else:
+                go to the next step
+        If the system was unable to locate the keyboard charset, the next window will ask you for it
+            For epitech we will choose: fr_FR.UTF-8
+            In this context, the next window will ask for the keyboard layout,
+            For epitech we will use "Français"
+        The next series of windows will be Debian setting up its info
+        The next window of interest will be Debain asking for our computer name
+            You can give it the name you wish, but for Epitech I will set it to my-client-<your-name>
+        The next window will be Debian asking for a domain name:
+            You can name it as you wish, but for Epitech I will set it to my-client-<your-name>.<a_domain_name>
+                In my case it will be my-client-<your-name>.com
+        The next window is a prompt asking you to set the password for the root.
+        below the entry line there is a checkbox accompagned with the text "Afficher le mot de passe en clair"
+        once done, you can hiw the |DOWN ARROW KEY] until the text "<continuer>" is highited in red
+        The following window, will ask you to confirm the entered password of the previous window.
+        [KEY WORD]: 
+            "compte utilisateur" : display name of the account (requires a name),
+            "Identifiant": account (different from the previous word) and can only contain lowercases and numbers,
+            "mot de passe": Password
+
+        The following window will as you to create a user account, 
+            feel free to name it as you wish, I will name it with <my_name>
+            once done, press the [ENTER] key
+        The next window will be the "Identifiant" that will be the name displayed on the login page and in software
+            For epitech, for the henry_letellier account it will be hl.
+        Once these two steps out of the way, create your password for the account that you have just created
+        Then confirm that password in the newt window
+
+        After a bit more pf auto configuration by debian in the next window
+
+        The next window will be very important for the dualboot because it is about disk allocation
+            as we wich to install Debian alongside arch, we will choose the option "Manuel"
+        The next window will ask us how we wich to fragment the disk in order to install Debian alongside Arch
+    Failed due to a problem in how I partitionned the disks.
+
+
+Will restart installation but with a different disk allocation.
+I will follow this tutorial to see how he does and addapt the installation:
+    https://youtu.be/KU6QC8UDyoI
+
+
+In Machine 2:
+    When launched, let it do its thing and get ready
+    as no specifications on how to use the installer has been given, I will then proceed the normal wayn the way you are expected to use it
+    So, once the system installer has booted up it will display a series of langages.
+    As there are no requirements for the langage to be usedn I will therefore use english (UK)
+        feel free to use any langage that pleases you, but all my instructions will contain the english names
+    Once the langage selected, the next window (if an update is available (wich is my case)) the window will offer you the choice of updateing the installer,  continuing without updating or to go back)
+        I will update the installer, newer = better (often)
+        please note that for this update, the system will need an access to the internet
+    after a bit of work, the system reboots and prompts us with two scroll-down menus:
+        The first one is for the keybord layout wich for me is french
+        The second one is the variant (AZERTY, QWERTY, etc) which for me is French - French (AZERTY)
+        If you are to lazy to search the scroll-downs, there is an option wich is [identify keyboard]
+        Once your choice done, go to the done option (bottom of screen) and press enter
+        after a bit of work
+        the installer wll prompt us with the connection page, wich in a VM will be eth (short for ethernet)
+            It will also show you your DHCPV4 whichi is the id of your server (not the IP), basicaly it is a door to allow other computers to connect to it.
+        If lost, you always have the shell access of the ssh help to guide you a bit throug your actions.
+        Meanwhile, I will go find a tutorial to beeter understand how to make the good connections
+        and opn the right ports.
+        
