@@ -429,43 +429,51 @@ In Machine 1:
             use the arrow keys to navigate to the "Espace libre section"
             Press enter
             choose "Créer une nouvelle partition"
-            In "Nouvelle taille de la parition" replace "21.6GB" by "5.6GB"
-            The next windpw will ask us for the type of the partition, choose: "Logique"
-            The next question is where we wish to place the parition (beginig/end), choose: "Fin"
-            Let it do its work
-            In the next window, the information of the partition is displayed
-            If the "Point de montage" is not "/" then go to it, press the [ENTER key]
-                In the newly displayed window, choose "/ - système de fichiers racine"
-            Once done, you can navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+            #In "Nouvelle taille de la parition" replace "19.3GB" by "5.6GB"
+            #The next windpw will ask us for the type of the partition, choose: "Logique"
+            #The next question is where we wish to place the parition (beginig/end), choose: "Fin"
+            #Let it do its work
+            #In the next window, the information of the partition is displayed
+            #If the "Point de montage" is not "/" then go to it, press the [ENTER key]
+            #    In the newly displayed window, choose "/ - système de fichiers racine"
+            #Once done, you can navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
             Back on the "Partitionner les disques" screen, navigate to "Partitionnement assisté" and press the [ENTER key]
             Go to "espace disponible" and press the [ENTER key]
             Choose the "Créer une nouvelle partition" and press the [ENTER key]
-            Replace "16.0GB" by "10.0GB" and press the [ENTER key]
+            Replace "19.3GB" by "10.0GB" and press the [ENTER key]
+            Chose "Logique" when prompted
             Choose "Fin" and press the [ENTER key]
             In "Point de montage :" make sure that it is labeld as root "/"
             If this is not the case, navigate to it, press the [ENTER key] and choose "/ - sytème de fichiers racine", press the [ENTER key]
             Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
             Back in the "Partitionner les disques" screen go to "espace libre" and press the [ENTER key]
             Choose the "Créer une nouvelle partition" and press the [ENTER key]
-            Replace "6.0GB" by "4.5GB" and press the [ENTER key]
+            Replace "9.3GB" by "4.5GB" and press the [ENTER key]
+            whenever prompted between "logique" and "primaire", choose "logique"
             Choose "Fin" and press the [ENTER key]
             In "Point de montage :" make sure that it is labeld as root "/home"
             If this is not the case, navigate to it, press the [ENTER key] and choose "/home - répertoire personnels des utilisateurs", press the [ENTER key]
             Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
             In the screen "Partitionner les disques" go to "espace libre" and press the [ENTER key]
             Choose the "Créer une nouvelle partition" and press the [ENTER key]
-            Replace "1.5GB" by "500MB" and press the [ENTER key]
+            Replace "4.8GB" by "500MB" and press the [ENTER key]
             Choose "Fin" and press the [ENTER key]
             In "Point de montage :" make sure that it is labeld as root "/boot"
             If this is not the case, navigate to it, press the [ENTER key] and choose "/boot - fichiers statiques du programme de démarrage", press the [ENTER key]
             Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
             In the "Partitionner les disques" screen go to "espace libre" and press the [ENTER key]
             Choose the "Créer une nouvelle partition" and press the [ENTER key]
-            Replace "993.0MB" by "500MB" and press the [ENTER key]
+            Replace "4.3GB" by "500MB" and press the [ENTER key]
             Choose "Fin" and press the [ENTER key]
             In the next screen navigage to "Utiliser comme :" and press the [ENTER key]
             In the new menu choose the "espace d'échange (swap)" option and press the [ENTER key]
             Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
         Navigate to the "Terminer le partitionnement et appliquer les changements" and press the [ENTER key]
 
         The next window will ask us to confirm that we wish to apply the changes to the disk.
@@ -510,8 +518,7 @@ In Machine 1:
         Let it do its job until the next window
         
         After a while, the next promp is going to ask us if we would like to add Debian to the boot manager in the startup screen.
-            For the security, I will risk the "<non>" button.
-            (ignore this line) if the boot screen changes from arch to debian, I will choose the "<non>" option
+            I will choose "<oui>"
         The next window, will ask us where we wish to install this program
             For this one we will choose the "/dev/sda ([...])" option, (the '[...]' correspond to it's ID to wich I chose not to copy)
         
