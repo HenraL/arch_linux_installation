@@ -48,6 +48,7 @@ sudo pacman -Sy --noconfirm curl
 cd /etc/profile.d/
 echo "Setting up help scripts"
 cd $HOME
+sleep 4s
 sudo mkdir .my_scripts
 echo -ne '#!/bin/bash\nflatpak run org.mozilla.firefox\n' > firefox
 echo -ne '#!/bin/bash\ncd /etc\nemacs -nw profile\n' > profile
@@ -59,7 +60,7 @@ ln -s "start_openssh" "saossh"
 echo -ne "#!/bin/bash\nif [ $# -eq 1]\nthen\n\tssh  root@${1}\nelse\n\techo \"Please enter the IP you wish to configure openssh to connect to.\n\"\nfi\n\n# The authenticity of host '$1 ($1)' can't be established.\n# \n# ECDSA key fingerprint is 7c:18:34:25:af:ac:97:92:cb:72:5f:4b:07:57:25:de.\n# \n#Are you sure you want to continue connecting (yes/no)? yes\n# \n# Warning: Permanently added '192.168.1.142' (ECDSA) to the list of known hosts.\n# \n# root@192.168.1.142's password: \n# \n# Last login: Tue Jun 21 18:33:19 2011\n# \n" > add_ip_to_openssh
 ln -s "add_ip_to_openssh" "aiptssh"
 ln -s "add_ip_to_openssh" "add_ip"
-curl -o "activate_deactivae_xfce.sh" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/sh/activate_deactivae_xfce.sh"
+curl -o "activate_deactivae_xfce.sh" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/sh/activate_deactivate_xfce.sh"
 ln -s "enabe_disable_xfce" "edxfce"
 echo -ne "#!/bin/bash\nenable_disable_xfce -e" > enable_xfce
 ln -s "enable_xfce" "exfce"

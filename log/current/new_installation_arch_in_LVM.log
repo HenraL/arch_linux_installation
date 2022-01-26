@@ -147,7 +147,7 @@ In Machine 1:
     Installing arch_linux:
         pacman -Syy
         pacstrap /mnt base base-devel linux linux-firmware nano emacs dhcpcd net-tools grub
-    Gnerating a table system:
+    Gnerating a table system: -L
         genfstab -U /mnt >> /mnt/etc/fstab
     setting up the base system:
         arch-chroot /mnt
@@ -202,7 +202,7 @@ In Machine 1:
             groupedel <group_name>
 
     Assigning users to groups:
-        If you wish to display the grouos and their respective users:
+        If you wish to display the groups and their respective users:
             cat /etc/group | less
         If you wisch to add a user to a group:
             gpasswd -a <username> <group1>
