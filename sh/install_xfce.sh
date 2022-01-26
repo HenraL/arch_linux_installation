@@ -3,41 +3,41 @@ echo "This program was created by henry letellier"
 echo "Installing Xorg"
 sudo pacman -S --needed xorg
 echo "installing required ressources for xfce"
-sudo pacman -Sy --needed xfce4
-sudo pacman -Sy --needed mousepad
-sudo pacman -Sy --needed parole
-sudo pacman -Sy --needed ristretto
-sudo pacman -Sy --needed thunar-archive-plugin
-sudo pacman -Sy --needed thunar-media-tags-plugin
-sudo pacman -Sy --needed xfce4-battery-plugin
-sudo pacman -Sy --needed xfce4-datetime-plugin
-sudo pacman -Sy --needed xfce4-mount-plugin
-sudo pacman -Sy --needed xfce4-netload-plugin
-sudo pacman -Sy --needed xfce4-notifyd
-sudo pacman -Sy --needed xfce4-pulseaudio-plugin
-sudo pacman -Sy --needed xfce4-screensaver
-sudo pacman -Sy --needed xfce4-taskmanager
-sudo pacman -Sy --needed xfce4-wavelan-plugin
-sudo pacman -Sy --needed xfce4-weather-plugin
-sudo pacman -Sy --needed xfce4-whiskermenu-plugin
-sudo pacman -Sy --needed xfce4-xkb-plugin
-sudo pacman -Sy --needed file-roller
-sudo pacman -Sy --needed network-manager-applet
-sudo pacman -Sy --needed leafpad
-sudo pacman -Sy --needed epdfview
-sudo pacman -Sy --needed galculator
-sudo pacman -Sy --needed lightdm
-sudo pacman -Sy --needed lightdm-gtk-greeter
-sudo pacman -Sy --needed lightdm-gtk-greeter-settings
-sudo pacman -Sy --needed capitaine-cursors
-sudo pacman -Sy --needed arc-gtk-theme
-sudo pacman -Sy --needed xdg-user-dirs-gtk
-sudo pacman -Sn --needed xfce4-goodies
-sudo pacman -Sy --needed virtualbox-guest-utils xf86-video-vmware
+sudo pacman -Syy --needed xfce4
+sudo pacman -Syy --needed mousepad
+sudo pacman -Syy --needed parole
+sudo pacman -Syy --needed ristretto
+sudo pacman -Syy --needed thunar-archive-plugin
+sudo pacman -Syy --needed thunar-media-tags-plugin
+sudo pacman -Syy --needed xfce4-battery-plugin
+sudo pacman -Syy --needed xfce4-datetime-plugin
+sudo pacman -Syy --needed xfce4-mount-plugin
+sudo pacman -Syy --needed xfce4-netload-plugin
+sudo pacman -Syy --needed xfce4-notifyd
+sudo pacman -Syy --needed xfce4-pulseaudio-plugin
+sudo pacman -Syy --needed xfce4-screensaver
+sudo pacman -Syy --needed xfce4-taskmanager
+sudo pacman -Syy --needed xfce4-wavelan-plugin
+sudo pacman -Syy --needed xfce4-weather-plugin
+sudo pacman -Syy --needed xfce4-whiskermenu-plugin
+sudo pacman -Syy --needed xfce4-xkb-plugin
+sudo pacman -Syy --needed file-roller
+sudo pacman -Syy --needed network-manager-applet
+sudo pacman -Syy --needed leafpad
+sudo pacman -Syy --needed epdfview
+sudo pacman -Syy --needed galculator
+sudo pacman -Syy --needed lightdm
+sudo pacman -Syy --needed lightdm-gtk-greeter
+sudo pacman -Syy --needed lightdm-gtk-greeter-settings
+sudo pacman -Syy --needed capitaine-cursors
+sudo pacman -Syy --needed arc-gtk-theme
+sudo pacman -Syy --needed xdg-user-dirs-gtk
+sudo pacman -Sny --needed xfce4-goodies
+sudo pacman -Syy --needed virtualbox-guest-utils xf86-video-vmware
 echo "installing firefox"
-sudo pacman -Sy --noconfirm firefox firefox-i18n-en-us
-sudo pacman -Sy --noconfirm flatpak
-sudo pacman -Sy --noconfirm --needed base-devel git
+sudo pacman -Syy --noconfirm firefox firefox-i18n-en-us
+sudo pacman -Syy --noconfirm flatpak
+sudo pacman -Syy --noconfirm --needed base-devel git
 git clone https://aur.archlinux.org/snapd.git
 cd snapd
 makepkg -si
