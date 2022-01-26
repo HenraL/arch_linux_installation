@@ -1,8 +1,10 @@
 #!/bin/bash
 echo "This program was created by henry letellier"
+sleep 4s
 echo "Installing Xorg"
 sudo pacman -S --needed xorg
 echo "installing required ressources for xfce"
+sleep 4s
 sudo pacman -Syy --needed xfce4
 sudo pacman -Syy --needed mousepad
 sudo pacman -Syy --needed parole
@@ -35,6 +37,7 @@ sudo pacman -Syy --needed xdg-user-dirs-gtk
 sudo pacman -Sny --needed xfce4-goodies
 sudo pacman -Syy --needed virtualbox-guest-utils xf86-video-vmware
 echo "installing firefox"
+sleep 4s
 sudo pacman -Syy --noconfirm firefox firefox-i18n-en-us
 sudo pacman -Syy --noconfirm flatpak
 sudo pacman -Syy --noconfirm --needed base-devel git
@@ -47,9 +50,12 @@ sudo snap install tree
 sudo pacman -Sy --noconfirm curl
 cd /etc/profile.d/
 echo "Setting up help scripts"
+sleep 4s
 cd $HOME
 sleep 4s
 sudo mkdir .my_scripts
+ls
+sleep 4s
 echo -ne '#!/bin/bash\nflatpak run org.mozilla.firefox\n' > firefox
 echo -ne '#!/bin/bash\ncd /etc\nemacs -nw profile\n' > profile
 echo -ne '#!/bin/bash\necho "toilet-deej.toilet"\n' > toilet
@@ -66,20 +72,32 @@ echo -ne "#!/bin/bash\nenable_disable_xfce -e" > enable_xfce
 ln -s "enable_xfce" "exfce"
 echo -ne "#!/bin/bash\nenable_disable_xfce -d" > disable_xfce
 ln -s "disable_xfce" "dxfce"
+ls
+sleep 4s
 #localectl set-x11-keymap br-abnt2
 echo "Adding the '.my_scripts' to the bashrc path"
 echo -ne 'export PATH="${HOME}/.my_scripts:$PATH"\n' >> $HOME/.bashrc
 echo "gathering more required packages"
+ls
+sleep 4s
 cd "${HOME}/Music"
 curl -L -o 'Ed Sheeran - Thinking Out Loud (Official Music Video).mp3' 'https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/Ed%20Sheeran%20-%20Thinking%20Out%20Loud%20(Official%20Music%20Video).mp3'
 curl -L -o 'In den Tiroler Bergen Mit Andreas Aschaber (Auner Andi) aus Westendorf Tirol.mp3' 'https://github.com/HenraL/arch_linux_installation/blob/main/mp3/In%20den%20Tiroler%20Bergen%20Mit%20Andreas%20Aschaber%20(Auner%20Andi)%20aus%20Westendorf%20Tirol.mp3?raw=true'
 curl -L -o "The Weather Girls - It's Raining Men (Video).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/The%20Weather%20Girls%20-%20It's%20Raining%20Men%20(Video).mp3"
 curl -L -o "_Weird_ Al Yankovic - Amish Paradise (Official Parody of _Gangsta's Paradise_).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/_Weird_%20Al%20Yankovic%20-%20Amish%20Paradise%20(Official%20Parody%20of%20_Gangsta's%20Paradise_).mp3"
+ls
+sleep 4s
 cd "${HOME}/Pictures"
 curl -L -o "thats-all-folks-looney-toons.gif" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/img/thats-all-folks-looney-toons.gif"
+ls
+sleep 4s
 cd "${HOME}/Videos"
 curl -L -o "my_video.webm" 'https://github.com/HenraL/arch_linux_installation/blob/main/videos/my_video.webm?raw=true'
+ls
+sleep 4s
 cd "${HOME}"
+ls
+sleep 4s
 setxkbmap -layout fr
 sudo pacman -Sy --noconfirm  sl
 sudo snap install toilet-deej
@@ -103,4 +121,4 @@ sleep 4s
 echo "enabling xfce to start at boot up"
 sudo systemctl enable lightdm
 sudo systemctl enable NetworkManager
-viu "thats-all-folks-looney-toons.gif"
+viu -1 "thats-all-folks-looney-toons.gif"
