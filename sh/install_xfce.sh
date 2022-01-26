@@ -44,10 +44,11 @@ makepkg -si
 sudo systemctl enable --now snapd.socket
 sudo ln -s /var/lib/snapd/snap /snap
 sudo snap install tree
+sudo pacman -Sy --noconfirm curl
 cd /etc/profile.d/
 echo "Setting up help scripts"
 cd $HOME
-mkdir .my_scripts
+sudo mkdir .my_scripts
 echo -ne '#!/bin/bash\nflatpak run org.mozilla.firefox\n' > firefox
 echo -ne '#!/bin/bash\ncd /etc\nemacs -nw profile\n' > profile
 echo -ne '#!/bin/bash\necho "toilet-deej.toilet"\n' > toilet
@@ -58,7 +59,7 @@ ln -s "start_openssh" "saossh"
 echo -ne "#!/bin/bash\nif [ $# -eq 1]\nthen\n\tssh  root@${1}\nelse\n\techo \"Please enter the IP you wish to configure openssh to connect to.\n\"\nfi\n\n# The authenticity of host '$1 ($1)' can't be established.\n# \n# ECDSA key fingerprint is 7c:18:34:25:af:ac:97:92:cb:72:5f:4b:07:57:25:de.\n# \n#Are you sure you want to continue connecting (yes/no)? yes\n# \n# Warning: Permanently added '192.168.1.142' (ECDSA) to the list of known hosts.\n# \n# root@192.168.1.142's password: \n# \n# Last login: Tue Jun 21 18:33:19 2011\n# \n" > add_ip_to_openssh
 ln -s "add_ip_to_openssh" "aiptssh"
 ln -s "add_ip_to_openssh" "add_ip"
-echo -ne "#\!\/bin\/bash\n##\n## EPITECH PROJECT, 2021\n## arch - activate_deactivae_xfce.sh\n## File description:\n## jitter jitter\n##\n\nOA='\\033[1;32m\\033[1;40m'\nOE='\\033[1;33m\\033[1;40m'\nOF='\\033[1;37m\\033[1;40m'\n\necho -ne \"\${OE}This program is provided as if and without any warranty.\\n\"\necho -ne \"\${OE}\\tUse at your own risk.\n\"\necho -ne \"\\n\"\necho -ne \"\${OF}Welcome to the little program to activate and deactivate exfce at startup\\n\"\necho -ne \"\${OF}Enter \${OA}'\$0 -e'\${OF} to enable xfce at startup\\n\"\necho -ne \"\${OF}Enter \${OE}'\$0 -d'\${OF} to disable xfce at startup\\n\"\n\nif [ \$1 -eq \"-e\"] || [ \$1 -eq \"e\" ] || [ \$1 -eq \"-E\" ] || [ \$1 -eq \"E\" ]\nthen\n    echo -ne \"\${OE} Enabling xfce at startup:\\r\"\n    mv \"/usr/lib/systemd/system/NetworkManager.service\" \"/usr/lib/systemd/system/CNetworkManager.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Enabling xfce at startup:\\r\"\n    mv \"/usr/lib/systemd/system/NetworkManager-dispatcher.service\" \"/usr/lib/systemd/system/CNetworkManager-dispatcher.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Enabling xfce at startup:..\\r\"\n    mv \"/usr/lib/systemd/system/NetworkManager-wait-online.service\" \"/usr/lib/systemd/system/CNetworkManager-wait-online.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Enabling xfce at startup:...\\r\"\n    mv \"/usr/lib/systemd/system/lightdm.service\" \"/usr/lib/systemd/system/Clightdm.service\"\n    sleep 0.5s\n    echo -ne \"\${OA} Enabling xfce at startup:...[ENABLED]\\n\"\nelif [ \$1 -eq \"-d\" ] || [ \$1 -eq \"d\" ] || [ \$1 -eq \"-D\" ] || [ \$1 -eq \"D\" ]\nthen\n    echo -ne \"\${OE} Disabled xfce at startup:\\r\"\n    mv \"/usr/lib/systemd/system/CNetworkManager.service\" \"/usr/lib/systemd/system/NetworkManager.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Disabled xfce at startup:.\\r\"\n    mv \"/usr/lib/systemd/system/CNetworkManager-dispatcher.service\" \"/usr/lib/systemd/system/NetworkManager-dispatcher.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Disabled xfce at startup:..\\r\"\n    mv \"/usr/lib/systemd/system/CNetworkManager-wait-online.service\" \"/usr/lib/systemd/system/NetworkManager-wait-online.service\"\n    sleep 0.5s\n    echo -ne \"\${OE} Disabled xfce at startup:...\\r\"\n    mv \"/usr/lib/systemd/system/Clightdm.service\" \"/usr/lib/systemd/system/lightdm.service\"\n    sleep 0.5s\n    echo -ne \"\${OA} Disabled xfce at startup:...[DISABLED]\\n\"\nelse\n    echo -ne \"\${OE}NO INPUT FOUND:\\n\${OF}\\tIf you wish to activate xfce on stratup:\\n\"\n    echo -ne \"\${OF}\\t\\tEnter \${OA}'\$0 -e'\\n\"\n    echo -ne \"\${OF}\\tIf you wish to disable xfce on startup:\\n\\t\\tEnter \${OE}'\$0 -d'\\n\"\\n\\necho -ne \"\${OF}This script was created by \${OA}(c) Henry Letellier\\n\"\n" > enable_disable_xfce
+curl -o "activate_deactivae_xfce.sh" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/sh/activate_deactivae_xfce.sh"
 ln -s "enabe_disable_xfce" "edxfce"
 echo -ne "#!/bin/bash\nenable_disable_xfce -e" > enable_xfce
 ln -s "enable_xfce" "exfce"
@@ -68,16 +69,15 @@ ln -s "disable_xfce" "dxfce"
 echo "Adding the '.my_scripts' to the bashrc path"
 echo -ne 'export PATH="${HOME}/.my_scripts:$PATH"\n' >> $HOME/.bashrc
 echo "gathering more required packages"
-sudo pacman -Sy --noconfirm curl
 cd "${HOME}/Music"
-curl -o 'Ed Sheeran - Thinking Out Loud (Official Music Video).mp3' 'https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/Ed%20Sheeran%20-%20Thinking%20Out%20Loud%20(Official%20Music%20Video).mp3'
-curl -o 'In den Tiroler Bergen Mit Andreas Aschaber (Auner Andi) aus Westendorf Tirol.mp3' 'https://github.com/HenraL/arch_linux_installation/blob/main/mp3/In%20den%20Tiroler%20Bergen%20Mit%20Andreas%20Aschaber%20(Auner%20Andi)%20aus%20Westendorf%20Tirol.mp3?raw=true'
-curl -o "The Weather Girls - It's Raining Men (Video).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/The%20Weather%20Girls%20-%20It's%20Raining%20Men%20(Video).mp3"
-curl -o "_Weird_ Al Yankovic - Amish Paradise (Official Parody of _Gangsta's Paradise_).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/_Weird_%20Al%20Yankovic%20-%20Amish%20Paradise%20(Official%20Parody%20of%20_Gangsta's%20Paradise_).mp3"
+curl -L -o 'Ed Sheeran - Thinking Out Loud (Official Music Video).mp3' 'https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/Ed%20Sheeran%20-%20Thinking%20Out%20Loud%20(Official%20Music%20Video).mp3'
+curl -L -o 'In den Tiroler Bergen Mit Andreas Aschaber (Auner Andi) aus Westendorf Tirol.mp3' 'https://github.com/HenraL/arch_linux_installation/blob/main/mp3/In%20den%20Tiroler%20Bergen%20Mit%20Andreas%20Aschaber%20(Auner%20Andi)%20aus%20Westendorf%20Tirol.mp3?raw=true'
+curl -L -o "The Weather Girls - It's Raining Men (Video).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/The%20Weather%20Girls%20-%20It's%20Raining%20Men%20(Video).mp3"
+curl -L -o "_Weird_ Al Yankovic - Amish Paradise (Official Parody of _Gangsta's Paradise_).mp3" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/mp3/_Weird_%20Al%20Yankovic%20-%20Amish%20Paradise%20(Official%20Parody%20of%20_Gangsta's%20Paradise_).mp3"
 cd "${HOME}/Pictures"
-curl -o "thats-all-folks-looney-toons.gif" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/img/thats-all-folks-looney-toons.gif"
+curl -L -o "thats-all-folks-looney-toons.gif" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/img/thats-all-folks-looney-toons.gif"
 cd "${HOME}/Videos"
-curl -o "my_video.webm" 'https://github.com/HenraL/arch_linux_installation/blob/main/videos/my_video.webm?raw=true'
+curl -L -o "my_video.webm" 'https://github.com/HenraL/arch_linux_installation/blob/main/videos/my_video.webm?raw=true'
 cd "${HOME}"
 setxkbmap -layout fr
 sudo pacman -Sy --noconfirm  sl

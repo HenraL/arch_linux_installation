@@ -313,6 +313,18 @@ In Machine 1:
                 Once you have finished using the key, use:
                     umount /dev/sdb1
                     to unmount the usb key.
+
+        If you do not have the file on a usb, you can always download it using this command:
+            If you are logged in as root, run :
+                pacman  -Sy --noconfirm curl
+            otherwise, if this is not the case, add 'sudo' in front of the next three lines.
+            Then run:
+                curl -o "install_xfce.sh" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/sh/install_xfce.sh"
+                a shorter version:
+                    curl -L -o "install_xfce.sh" "https://bit.ly/install_xfce_on_arch"
+            Don't forget to give it execution rights:
+                chmod 777 install_xfce.sh
+                
         Installing Xorg:
             sudo pacman -S --needed xorg
         Installing additional components and applications
