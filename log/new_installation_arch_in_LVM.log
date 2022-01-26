@@ -287,10 +287,32 @@ In Machine 1:
     Part 2: installing XFCe in archinux
         logged in with the root account.
         If you have a bash you wish to run from a key:
-            mkdir /mnt/savior
-            mount -t vfat /dev/sdb1 /mnt/savior
-            copy your file from the key to the computer
-            chmod 777 your file
+            To mount a key, poweroff the machie using the command "poweroff"
+                If you are in virtualbox:
+                    "settings" > "USB"
+                    In "USB", make sure that "Enable USB Controller" is checked.
+                    In "USB Device Filters" find the usb with a + on it:
+                        from the options that just appeared, (if you key is a flash drive), it will be listed as "Generic Mass Storage [<a_number_ade_of_4_digits>]" 
+                        Once clicked, you should see the name of the device you just clicked and t should be checked.
+                        Click the "ok" button when you have finished with the settings
+                        If you wish to ask virtualbox ti nit track the key anymore, in the "settings" > "USB" > "USB Device Filters" uncheck your device then click the "ok" button to confirm your choices.
+            You can now boot the machine.
+            In the account in wich you choose to mount the key, create a folder with its name:
+                In my case, the folder name will be "savior"
+                    mkdir /mnt/savior
+            You can now mount the key in the folder you just created using this command (PS/ your usb key can be displayed using fdsik -l):
+                mount -t vfat /dev/sdb1 /mnt/savior
+            navigate to the folder you created to access the content of the key
+            copy your file you wish from the key to the computer
+                In our case it will be "install_xfce.sh"
+            As our file if a bash script we will need to give it rights:
+                chmod 777 your file
+                In our case:
+                    chamid 777 install_xfce.sh
+            Do not forget !!!!!!!!!!!!!!!!!!!!!!!:
+                Once you have finished using the key, use:
+                    umount /dev/sdb1
+                    to unmount the usb key.
         Installing Xorg:
             sudo pacman -S --needed xorg
         Installing additional components and applications
@@ -300,6 +322,8 @@ In Machine 1:
                 There was more interresting stuff
         Installing some compatibility helpers for communication between virtualbox and the computer
             sudo pacman -S --needed virtualbox-guest-utils xf86-video-vmware
+        Installing an SSH protcol: This is the website of the concerned protocol: https://www.openssh.com/
+
         Enabeling the display manager and network manager as service so that they run on next login:
             systemctl enable lightdm
             systemctl enable NetworkManager
