@@ -2,7 +2,7 @@
 echo "This program was created by henry letellier"
 sleep 4s
 echo "Installing Xorg"
-sudo pacman -S --needed xorg
+sudo pacman -Sy --needed xorg
 echo "installing required ressources for xfce"
 sleep 4s
 sudo pacman -Syy --needed xfce4
@@ -122,3 +122,11 @@ echo "enabling xfce to start at boot up"
 sudo systemctl enable lightdm
 sudo systemctl enable NetworkManager
 viu -1 "thats-all-folks-looney-toons.gif"
+#Have a look at:
+# [hlatalliard@fedora ~]$ localectl
+#    System Locale: LANG=en_GB.UTF-8
+#        VC Keymap: fr
+#       X11 Layout: fr
+# [hlatalliard@fedora ~]$ localectl set-
+# set-keymap      set-locale      set-x11-keymap  
+# [hlatalliard@fedora ~]$ localectl set-keymap 
