@@ -1,3 +1,5 @@
+If ever you are stuck at some point in the installation and that you are an epitech student, give me a shout on teams (Henry Letellier) OR just ask an astek.
+
 Prerequirements:
 -   Have virtualbox
 -   Have an iso of Archlinux: https://archlinux.org/releng/releases/2022.01.01/torrent/
@@ -540,71 +542,43 @@ In Machine 1:
         If you chose to boot on debian, click on your account
             Then locate the small cog on the bottom right of the screen
                 In the option menu choose Cinamon
+    Part 3.2: Creating the user accounts
+        log into debian as root
+        Creating the required groups:
+            For this I will use the same commands as in the arch linux
+                groupadd pedago
+                groupadd epitech
+                groupadd students
+        Creating the users:
+            I will create the epitech required users:
+                useradd -m -g users -G epitech -s /bin/bash hadrien
+                passwd hadrien
+                useradd -m -g users -G epitech -s /bin/bash vincent
+                passwd vincent
+                useradd -m -g users -G epitech -s /bin/bash luc
+                passwd luc
+        Assigining groups to users:
+            I will assing the groups to the epitech users:
+                usermod -aG pedago,epitech hadrien
+                usermod -aG pedago,epitech vincent
+                usermod -aG students,epitech luc
+        Giving the same rights to hadrien and to vincent:
+            For this I will be giving the group "pedago" the admin rights:
+                I will thus open the file "/etc/sudoers" with "nano":
+                    And add the line  to the section.
+                        %pedago ALL=(ALL) ALL
 
-    Part 3.2: repairing the grub
-        After the reboot, the computer might be stuck in "grub rescue>" mode
-        /*For this, we will tell it how and/or where to boot and possibly create a boot menu.
-        First, we will list the available partitionsand drives by typing the 'ls' command
-        To find the boot parition, list each partition one by one like this "ls (hd0, [...])/" ( "[...] corresponds to the partition you wish to list (ex: (hd0, msdos5)")
-        When the right one is found, the content of the disk will contain "lost+found" and more importantly "boot"
-        To help you, if you have followed the same partitionning as I have, listing the disk (ex: "ls (hd0,msdos5)/") should have this output:
-            (hd0,msdos5) == ext2 | "./ ../ lost+found/ vmlinuz-linux initramfs-linux.img initramfs-linux-fallback.im drub/"
-            (hd0,msdos6) == ext2 | "./ ../ lost+found/ boot/ var/ home/ dev/ run/ etc/ tmp/ sys/ proc/ usr/ bin lib lib64 mnt/" opt/ root/ sbin srv/
-            (hd0,msdos7) == unknown | (there is nothing because it is empty [this is not a system message])
-            (hd0,msdos8) == ext2 | "./ ../ lost+found/"
-            (hd0,msdos9) == unknown | (there is nothing because it is empty [this is not a system message])
-            (hd0,msdos10) == ext2 | "./ ../ lost+found/ boot/ home/ etc/ media/ vmlinuz.old var/ bin usr/ sbin lib lib32 lib64 libx32 dev/ proc/ root/ run/ sys/ tmp/ mnt/ srv/ opt/ .cache/ initrd.img.old vmlinuz initrd.img"
-            (hd0,msdos11) == ext2 | "./ ../ lost+found/ hl/"
-            (hd0,msdos12) == ext2 | "./ ../ lost+found/ config-5.10.0-10-amd64 vmlinuz-5.10.0-10-amd64 grub/ System.map-5.10.0-0-amd64 initrd.img-5.10.0-10-amd64"
-            (hd0,msdos13) == unknown | (there is nothing because it is empty [this is not a system message])
-        In my case, I have found 2 boot/ directories so I will dig deeper to try and find the partition containing arch_linux.
-            For this, I will list the "home/" of both directories.
-                The two directories containing the "home/" partition are "(hd0, msdos6)" and "(hd0,msdos10)"
-                    Listing directory 1: "./ ../ romain/ henry/ leslie/"
-                    Listing directory 2: "./ ../ "
-                For me the partition that interests me is the first one (hd0,msdos6)
-        The next step is to set the prefix:
-            set prefix=(hd0,your_partition)/boot/grub
-                For me it is:
-                    set prefix=(hd0,6)/boot/grub
-        Afterwards, set the partition as the root for booting.
-            set root=(hd0,your_partition)
-                For me it is:
-                    set root=(hd0,6)
-        And don't forget these two commands:
-            insmod normal
-                You might receive an error like this:
-                    "error: file '/boot/grub/i386-pc/normal.mod' not found"
-            normal
-        */
-        If this is the case:
-            If in a virtualbox (or other virtualmachine) localte the pause shortucut (for virtualbox it is the [right CTRL key] and the [P key])
-                this should free your cursor for allow you to stop the program
-            If you are on a pc, force stop the computer by pressing the power key until the computer turns off.
-            When you will reboot, make sure to boot into the arch installation software.
-            After the boot, enter "loadkeys fr-latin1"
-            Better late than never (labeling the disks):
-                Description for the abreviations, same as before
-                fdisk /dev/sda [ENTER key]
-                CL: t
-                PN: 7
-                TPC: 82
-                CL: t
-                PN: 12
-                TPC: 82
-                CL: w
-            //format accordingly:
-                //mkfs.ext2 /dev/sda5
-            Create the required folders:
-                mkdir /mnt/boot /mnt/var /mnt/home
-            mount the required disks:
-                mount /dev/sda5 /mnt/boot
-            load pacman:
-                pacman -Syy
-            install the grub:
-                pacstrap /mnt grub
+        Removing the the unnecessary account:
+            The account you created as a user during the installation is not necessary anymore.
+            we shall now remove it.
+                userdel -r <the_user_you_created>
+                    In my case it will be:
+                        userdel -r henry_letellier
+        
+        Applying changes:
+            You can now "reboot" the system in order to make sure the changes have been applied.
 
-    
+        You can now logg in with any account you wish.
 
 In Machine 2:
     When launched, let it do its thing and get ready
