@@ -68,7 +68,7 @@ In Machine 1:
             64 byte from par21s19-in-f14.1e100.net (142.250.179.78): icmp_seq=1 ttl=63 time=5.74 ms
     this allows you to check your connectivity
     enter : show the keyboard options: ls /usr/share/kbd/keymaps/**/*.map.gz
-        to display the availble keyboards if you do not know the keyboard you want and that quwerty does not suit you.
+        to display the availble keyboards if you do not know the keyboard you want and that qwerty does not suit you.
     add : | less to break the list to the size of your terminal.
     enter : loadkeys fr-latin1 to change the keyboard layout
     fr is the country of the layout
