@@ -169,6 +169,7 @@ In Machine 1:
         mount /dev/vg1/home /mnt/home
     Installing arch_linux:
         pacman -Syy
+        pacman -Sy --needed archlinux-keyring
         pacstrap /mnt base base-devel linux linux-firmware nano emacs dhcpcd net-tools grub
     Gnerating a table system:
         genfstab -U /mnt >> /mnt/etc/fstab
@@ -267,6 +268,8 @@ In Machine 1:
             nano /etc/mkinitcpio.conf
         replace this line in the file "HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)":
             With "HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)"
+
+            This line is generaly the first HOOK of the program.
         regenerate the image of initramfs:
             mkinitcpio -p linux
         exit
