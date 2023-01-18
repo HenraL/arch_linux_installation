@@ -252,9 +252,9 @@ In Machine 1:
                     write on a new line
                     <account_name> ALL=(ALL) ALL
                 in my case:
-                    (just under the line: root ALL=(ALL) ALL)
-                    romain ALL=(ALL) ALL
-                    #henry ALL=(ALL) ALL
+                    (just under the line: root ALL=(ALL:ALL) ALL)
+                    romain ALL=(ALL:ALL) ALL
+                    #henry ALL=(ALL:ALL) ALL
     How to show the existing accounts:
         cat /etc/passwd | less
 
@@ -263,11 +263,15 @@ In Machine 1:
         pacman -Sy lvm2
         If it refuses to install:
             grub-install /dev/sda --force
-        grub-mkconfig -o /boot/grub/grub.cfg
+
+        !!!!!!!! Don't miss this line !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !       grub-mkconfig -o /boot/grub/grub.cfg                      !
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         open the mkinitcpio.conf file:
             nano /etc/mkinitcpio.conf
-        replace this line in the file "HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)":
-            With "HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)"
+        
+        replace this line (It is the only one that is not commented) in the file "HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block filesystem fsck)":
+            With "HOOKS=(base udev autodetect modconf kms keyboard keymap consolefont block lvm2 filesystem fsck)"
 
             This line is generaly the first HOOK of the program.
         regenerate the image of initramfs:
@@ -379,7 +383,7 @@ In Machine 1:
         In the new window, choosing your virtual machine
         clicking next
         checking the box Include ISO image files
-            This will ensure that it can do a rollback more easally if needed.
+            This will ensure that it can do a rollback more easily if needed.
         clicking next
         possibly adding info in the sections of the next window
         and then clicking the export button.
@@ -455,19 +459,10 @@ In Machine 1:
             In the next window of options I will choose the "Tout dans une partitio 'recommandé pour les débutants)"
             After a bit of work, the next window will display the partitions after the changes have been loaded (but not applied)
             The debian disk should appear like this 'n° 2  primaire  21.6 GB f ext4 /' it should be the last one in the list of disks, all the others should be the ones on wich arch linux has been installed. */
-        else if you are following the epitech partitioning, I strngly recommend you follow this section:
+        else if you are following the epitech partitioning, I strongly recommend you follow this section:
             use the arrow keys to navigate to the "Espace libre section"
             Press enter
             choose "Créer une nouvelle partition"
-
-            #In "Nouvelle taille de la parition" replace "19.3GB" by "5.6GB"
-            #The next windpw will ask us for the type of the partition, choose: "Logique"
-            #The next question is where we wish to place the parition (beginig/end), choose: "Fin"
-            #Let it do its work
-            #In the next window, the information of the partition is displayed
-            #If the "Point de montage" is not "/" then go to it, press the [ENTER key]
-            #    In the newly displayed window, choose "/ - système de fichiers racine"
-            #Once done, you can navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
 
             In "n° 1         524.3 MB  F swap    swap"
             In "Utiliser comme : espace d'échange (' swap ') " press the [ENTER key]
