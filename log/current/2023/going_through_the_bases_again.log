@@ -313,7 +313,7 @@ In Machine 1:
         Changing the langage from french to english:
             select the langage from the list:
                 sudo nano /etc/locale.gen
-            generate a new lngge with:
+            generate a new language with:
                 sudo locale-gen
                     Uncomment the langage you wish
                         I uncommented en_GB.UTF-8 UTF-8
@@ -592,7 +592,7 @@ In Machine 1:
             For this I will be giving the group "pedago" the admin rights:
                 I will thus open the file "/etc/sudoers" with "nano":
                     And add the line  to the section.
-                        %pedago ALL=(ALL) ALL
+                        %pedago ALL=(ALL:ALL) ALL
 
         Removing the the unnecessary account:
             The account you created as a user during the installation is not necessary anymore.
@@ -604,7 +604,7 @@ In Machine 1:
         Applying changes:
             You can now "reboot" the system in order to make sure the changes have been applied.
 
-        You can now logg in with any account you wish.
+        You can now log in with any account you wish.
 
 In Machine 2:
     When launched, let it do its thing and get ready
