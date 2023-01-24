@@ -16,3 +16,13 @@ henry_letellier:
 luc: Luc
 hadrien: Hadrien
 vincent: Vincent
+
+
+[00:02:00] Ubuntu server:
+    [mysql passwords]:
+        [root account]: @R00tAccountt%
+    
+    [phpmyadmin passwords]:
+        [phpmyadmin account]:
+            [MySQL database name]: phpmyadmin
+            [password]: @PHPMeAdmin00%

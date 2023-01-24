@@ -616,5 +616,313 @@ In Machine 2:
         Search for my videos for apache installation
         Search for my videos for ufw management
 
-        Installing mySQL:
+        Installing mySQL: (following tutorial at: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04)
+            Keep the system updated:
+                sudo apt update && sudo apt upgrade -y
+            Intall the mysql server package:
+                sudo apt install mysql-server
+            Spin up mysql:
+                sudo systemctl start mysql
+            Check that the service is up an running:
+                sudo systemctl status mysql
+
+                When ready, press q to exit the prompt
             
+            Log into your mysql database:
+                sudo mysql
+
+            Because we are (as of date) after 2022, we will have to temporarely edit the sql configuration in order to finish the setup:
+                In your sql prompt: 'mysql>' enter ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+            
+                You should receive the message: 'Query OK, 0 rows affected (0.01 sec)'
+                Enter 'exit' then press the [ENTER key] to exit mysql
+            
+            Run the mysql configuration file by entering:
+                sudo mysql_secure_installation
+
+            On the first message: 
+                <Securing the MySQL server deployment.
+
+                Enter password for user root:>
+
+                    Enter the password : "password"
+
+            The next question asks if you would like mysql to check if the level of security corresponds to the one set in the database:
+                Enter: y
+                Press the [ENTER key]
+            
+            The following question will ask for the required password strength for the server:
+                the options are:
+                    0 for low security (the password needs to be 8 characters long)
+                    1 for medium security (the password needs to be 8 characters long and have at least two special characters such as %, @, ~, / as well as numbers and alternating uppercases and lowercases
+                    2 for strong security (the password needs to be 8 characters long and have at least two special characters such as %, @, ~, / as well as numbers and alternating uppercases and lowercases as well as dictionary file (%, @, etc)
+                We are going for low (0) because we are in a virtual machine stuck in a closed network
+
+                So enter 0
+                Press the [ENTER key]
+
+            The program will ask if we wish to change the password for the root
+                Enter: y (for yes)
+                Press the [ENTER key]
+                    The program will now ask us to set a new password for the root:
+                        Enter your new password (for me @R00tAccountt%)
+                        and again when asked to confirm it
+
+                            The program now asks us if we wish to continue with the provided password
+                                Enter: y
+                                Press the [ENTER key]
+
+            Now that the password has been set, the program will move on to asking us if we wish to remove authorisation access to anonymous users:
+                Enter: y
+                Press the [ENTER key]
+
+            The next question is about disabeling remote loggin into the root:
+                Enter: y
+                Press the [ENTER key]
+
+            The following question is if we would like to remove the sample databases:
+                Enter: y
+                Press the [ENTER key]
+            
+            The new question is if we wish to update the privilege tables:
+                Enter: y
+                Press the [ENTER key]
+
+            Great you have now configured the mysql database.
+
+        Installing PHPmyAdmin: (Following tutorial at: https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-on-ubuntu-22-04)
+
+            !!!! Important notice !!!!!
+            If you have already install mysql, you will need to run the following command:
+                Connect to your MySQL database (for me: sudo mysql -p@R00tAccountt%)
+                Type the command: (id: fix_phpMyAdmin)
+                    UNINSTALL COMPONENT "file://component_validate_password";
+                    Press the [ENTER key]
+                    You should see the following message (if everything is successefull):
+                        Query OK, 0 rows affected (0.00 sec)
+                    Enter: exit
+                    Press the [ENTER key]
+                    This should bring back the default prompt.
+                    If this is the case, then you are all set for the installation
+                END_of_id_fix_phpMyAdmin
+
+                Otherwise, when the installation will fail:
+                    Choose the option abort
+                    Do the previous operations: (located at [fix_phpMyAdmin])
+                    Restart the installer.
+                    
+                If on the other hand, you do not have a mysql database installed.
+                    Follow the PHPmyAdmin installer
+                    When the installer fails
+                    Choose the abort option
+                    Do the previous operations (located at [fix_phpMyAdmin])
+                    Restart the installation process.
+            
+            Installing the required modules for PHP:
+                sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl
+
+                When prompted with the window: "Configuring phpmyadmin":
+                    Press the [SPACE key] to select the web server you wish php to be installed
+                    Use the arrow [UP] and [DOWN] keys to change the box on wich you are at
+
+                    In my case:
+                        I pressed the [SPACE key] when the cursor was on the box apache2
+                        I then pressed the [ENTER key] to confirm my choice.
+
+                    I let the installer run it's course up to the next prompt.
+
+                When prompted with the window: "Configuring phpmyadmin" a second time:
+                    I was offered to the choice to use "<Yes>" or "<No>"  at the question "Configure database for phpmyadmin with dbconfig-common?"
+                        I used the [LEFT arrow] to make sure I was on the "<Yes>" option.
+                        I then pressed the [ENTER key]
+                
+                PHPmyAdmin then prompted me with another window asking for the password to use for the phpmyadmin account for the mysql database.
+                    I thus used the password: @PHPMeAdmin00%
+                    I then pressed the [ENTER key]
+
+                PHPmyAdmin, showed another window, this time asking for me to confirm my password:
+                    I thus enter: @PHPMeAdmin00%
+                    I then pressed the [ENTER key]
+
+                This will thus trigger an error in the script, and PHPmyAdmin will prompt us with 4 options:
+                    * abort
+                    * retry
+                    * retry (skip questions)
+                    * ignore
+
+                    We will choose the retry option
+
+                This, will, as expected, show the window with the question: "Configure database for phpmyadmin with dbconfig-common?":
+                    We will choose the "<Yes>" option
+                    Then press the [ENTER key]
+
+                The next Window will ask us for the connexion method:
+                    We will choose the "Unix socket" (first option)
+                    then press the [ENTER key]
+
+                The following window will show us the authentication method:
+                    We will press the [ENTER key]
+
+                The next window contains 4 options:
+                    * default
+                    * mysql_native_password
+                    * sha256_password
+                    * caching_sha2_password
+
+                    We will choose the 1rst option (using the [UP] and [DOWN] arrow keys)
+                    Once our option is highlighted, we will press the [ENTER key]
+
+                The following window will ask us for the name of the database for PHPmyAdmin
+                    We will leave the default database name: "phpmyadmin"
+                    We will then press the [ENTER key]
+
+                The next window is all about explaining what the next question is about.
+                    Press the [ENTER key] when ready
+
+                The following window will prompt us with the authentication method for phpmyadmin:
+                    Leave the default text: "phpmyadmin@localhost"
+                    Then press the [ENTER key]
+
+                The next window will ask us to enter the password we wish to set for the "phpmyadmin" account that is going to be created
+                    Enter the password you have decided for the account.
+                        For me it is:
+                            @PHPMeAdmin00%
+
+                The following window will ask us to confirm our password.
+                    Enter the password you previously typed
+                    Then press the [ENTER key]
+
+                At this point, the installer should fail.
+                    It will Prompt us with te following options:
+                        * abort
+                        * retry
+                        * retry (skip questions)
+                        * ignore
+                    We will choose the abort option
+                    We will refer to the [fix_phpMyAdmin] section and follow it
+                    Once you have finished the section [fix_phpMyAdmin]
+                    Enter the command:
+                        sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl
+                        Or just use the [UP] arrow key to find the command in the list of commands you previously run
+                    Press the [ENTER key]
+                
+                The rest of the installation should go smoothly without any problems.
+
+            When you see the line:
+                No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                    This means that the installer has completed without any other problems
+            
+            You can now:
+                Connect to the mysql database, (for me it is: sudo mysql -p@R00tAccountt%)
+                    When in the MySQL database, run:
+                        INSTALL COMPONENT "file://component_validate_password";
+                        Press the [ENTER key]
+                            If the command run successfully, you should see the message:
+                                Query OK, 0 rows affected (0.00 sec)
+                        Enter 'exit'
+                        Press the [ENTER key]
+                    You should see the default prompt come back on screen.
+
+            You have now installed PHPmyAdmin
+
+        Installing PHP: (Following tutorial at: https://linuxhint.com/install-latest-php-ubuntu22-04/)
+            Installing the Dependencies
+                In the terminal, run the command:
+                    sudo apt install software-properties-common apt-transport-https -y
+                    Press the [ENTER key]
+
+                    If the command run successfully you should see the following message:
+                        No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                
+            Import PPA Repository of PHP
+                In the terminal, run the command:
+                    sudo add-apt-repository ppa:ondrej/php -y
+                    Press the [ENTER key]
+
+                    If the command completed successfully, you should see the following message:
+                        Reading package lists... Done
+            
+            Install Apache module/PHP-FPM
+                In the terminal, run the command:
+                    sudo apt install -y php8.1 libapache2-mod-php8.1
+                    Press the [ENTER key]
+
+                    If the command completed successfully you should see the following message:
+                        No VM guests are running outdated hypervisor (qemu) binaries on this host.
+
+            Reloading the apache server for the changes to take effect:
+                In the terminal, run the following command:
+                    sudo systemctl restart apache2
+                    Press the [ENTER key]
+
+                    If the command completed successfully, you should not see any message.
+                    Otherwise, this means that the command failed.
+
+            Check that apache is running:
+                In the terminal, run the following command:
+                    sudo systemctl status apache2
+                    Press the [ENTER key]
+                    Press the [Q key] to quit the prompt
+
+                    In the new content that just appeared you should see the following message in green:
+                        active (running)
+            
+            Checking php is Correctly installed:
+                In the terminal run the following command:
+                    php --version
+
+                    If you see PHP 8.1.14 (cli) (built: Jan 13 2023 10:43:50) (NTS)
+                    (or something close to this line)
+                        This means that you have successfully installed php on your system.
+
+    Configuring ssh ports:
+        Configuring for the ssh server side (in the ubuntu server)
+        Enter:
+            sudo nano /etc/ssh/sshd_config
+                Locate the line that says "#Port 22"
+                Add a new line just under "#Port 22"
+                    On this new line
+                        write: Port 42
+                    Save the file with [CTRL+S]
+                    Exit the editor with [CTRL+X]
+
+        Configuring for the ssh client side (in the ubuntu server)
+        Enter:
+            sudo /etc/ssh/ssh_config
+            Locate the line that says "#   Port 22"
+                Add a new line just under "#   Port 22"
+                    On this new line
+                        write:    Port 42
+                    Save the file with [CTRL+S]
+                    Exit the editor with [CTRL+X]
+        Restart the ssh agents with the command:
+            sudo system restart ssh
+            Press the [ENTER key]
+            sudo system restart sshd
+            Press the [ENTER key]
+
+        Check that the systems are now running:
+            sudo system status ssh
+            Press the [ENTER key]
+            Press the [Q] key
+            sudo system status sshd
+            Press the [ENTER key]
+            Press the [Q] key
+            In both places you should see in green:
+                active (running)
+
+        Allow the Port 42 in the ufw firewall:
+            Run:
+                sudo ufw allow 42/tcp
+            Press the [ENTER key]
+            
+        Check the ports have been allowed:
+            Run:
+                sudo ufw status
+            Press the [ENTER key]
+            
+            This will show the ports that are authorised access in the firewall
+            You should see the port "42/tcp ALLOW Anywhere" and "42/tcp (v6) ALLOW Anywhere"
+            This means that the ports are visible on all the IPv4 and IPv6 addresses
+
+        
