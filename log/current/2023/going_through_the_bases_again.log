@@ -607,23 +607,14 @@ In Machine 1:
         You can now log in with any account you wish.
 
 In Machine 2:
-    When launched, let it do its thing and get ready
-    as no specifications on how to use the installer has been given, I will then proceed the normal wayn the way you are expected to use it
-    So, once the system installer has booted up it will display a series of langages.
-    As there are no requirements for the langage to be usedn I will therefore use english (UK)
-        feel free to use any langage that pleases you, but all my instructions will contain the english names
-    Once the langage selected, the next window (if an update is available (wich is my case)) the window will offer you the choice of updateing the installer,  continuing without updating or to go back)
-        I will update the installer, newer = better (often)
-        please note that for this update, the system will need an access to the internet
-    after a bit of work, the system reboots and prompts us with two scroll-down menus:
-        The first one is for the keybord layout wich for me is french
-        The second one is the variant (AZERTY, QWERTY, etc) which for me is French - French (AZERTY)
-        If you are to lazy to search the scroll-downs, there is an option wich is [identify keyboard]
-        Once your choice done, go to the done option (bottom of screen) and press enter
-        after a bit of work
-        the installer wll prompt us with the connection page, wich in a VM will be eth (short for ethernet)
-            It will also show you your DHCPV4 whichi is the id of your server (not the IP), basicaly it is a door to allow other computers to connect to it.
-        If lost, you always have the shell access of the ssh help to guide you a bit throug your actions.
-        Meanwhile, I will go find a tutorial to beeter understand how to make the good connections
-        and opn the right ports.
-        
+    Make sure the ubuntu server iso is present in the Optical drive bay.
+
+    When this is the case:
+        start the machine
+            Wait for it to boot up
+            Go through the installation process (transcribe video: 2023-01-24 14-52-37.mkv)
+        Search for my videos for apache installation
+        Search for my videos for ufw management
+
+        Installing mySQL:
+            
