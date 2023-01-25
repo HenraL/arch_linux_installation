@@ -1,2 +1,4 @@
 *.iso
 dump.log
+log/*
+tmp/*
