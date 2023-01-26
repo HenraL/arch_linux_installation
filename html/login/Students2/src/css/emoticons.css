@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "Emoticon";
+    src: url("../fonts/emoticons/emoticons-webfont.ttf");
+    src: url("../fonts/emoticons/emoticons-webfont.woff") format("woff"),
+        url("../fonts/emoticons/emoticons-webfont.woff2") format("woff2"),
+        url("../fonts/emoticons/emoticons-webfont.ttf") format("truetype"),
+        url("../fonts/emoticons/emoticons-webfont.otf") format("opentype"),
+        url("../fonts/emoticons/emoticons-webfont.eot") format("eot"),
+        url("../fonts//emoticons/emoticons-webfont.svg") format("svg");
+}
