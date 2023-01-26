@@ -1,0 +1,603 @@
+If ever you are stuck at some point in the installation and that you are an epitech student, give me a shout on teams (Henry Letellier) OR just ask an astek.
+
+Prerequirements:
+-   Have virtualbox
+-   Have an iso of Archlinux: https://archlinux.org/releng/releases/2022.01.01/torrent/
+-   Have an iso of Debian: https://www.debian.org/download
+-   Have an iso of Ubuntu Server: https://ubuntu.com/download/server
+
+I recommend you read the first installation log to learn a bit on how to use virtualbox;
+
+Creating 2 Virtual machines:
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    -   Machine 1:
+        * name: my-client_<your_name>
+        * type: Linux
+        * Version: Arch Linux (64-bit)
+        * Base Memory: 1000 MB
+        * Hard disk size: 30,5
+            ¤ 15 for Arch
+            ¤ 15,5 for Debian
+        * Boot Order:
+            1. Hard disk
+            2. Optical
+        * Extended Features:
+            ¤ (checked) Enable I/O APIC
+            ¤ (unchecked) Enable EFI (special OSes only)
+            ¤ (checked) Hardware Clock in UTC Time
+        * Processor(s): 2
+        * Storage:
+            Controller IDE:
+                archlinux iso
+            Controller SATA
+                my-client_<your_name>
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+    -   Machine 2:
+        * name: my-web_<your_name>
+        * Type: linux
+        * Version: Ubuntu (64-bit)
+        * Base memory: 3000MB
+        * Boot Order:
+            ¤ Hard disk
+            ¤ Optical
+        * Extended Features:
+            ¤ (Enabled) Enable I/O APIC
+            ¤ (Disabled) Enable EFI (Special OSes only)
+            ¤ (Enabled) Hardware Clock in UTC Time
+        * Storage:
+            Controller IDE
+                Ubuntu server.iso
+            Controller: SATA
+                my-web_<your_name>.vdi
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Using tutorial : https://www.debugpoint.com/2020/12/xfce-arch-linux-install-4-16/
+
+In Machine 1:
+    start the machine
+    when prompted choose the first option
+    when bootup finished (you should see the line root@archiso ~ # <root is in red>)
+    enter: ping google.com
+    once you see that content is beng recieved, you can hit |lft CTRL] + C to stop the command.
+        A packet loosk like this:
+            64 byte from par21s19-in-f14.1e100.net (142.250.179.78): icmp_seq=1 ttl=63 time=5.74 ms
+    this allows you to check your connectivity
+    enter : show the keyboard options: ls /usr/share/kbd/keymaps/**/*.map.gz
+        to display the availble keyboards if you do not know the keyboard you want and that qwerty does not suit you.
+    add : | less to break the list to the size of your terminal.
+    enter : loadkeys fr-latin1 to change the keyboard layout
+    fr is the country of the layout
+
+    Tip: if you are lost while typing, you can pull up an image on your phone of a qwerty keyboard to help you out.
+    Tip 2: If the screen is to crowded, enter clear to clean it
+    Make sure the system clock is accurate: timedatectl set-ntp true
+    Display the current clock info: timedatectl status
+    If the timezone is incorrect, and you don't know the code for your country, enter : timedatectl list-timezones
+        Type Q to exit
+    The generic command to set the time is: timedatectl set-timezone Time/Zone
+    for me it is:
+        timedatectl set-timezone Europe/Paris
+    enter: timedatectl to display clock info
+    Available drives:
+        list available drives: fdisk -l
+        For a little bit more of precision, you can use:
+            lsblk
+    Partition drive:
+        description:
+            CL = The default prompt to ask for help or other things
+            PT = partition type
+            PN = Partition number
+            FS = First sector
+            LS = Last sector
+            CR = Messages saying that partitions were sucessefully created.
+            TP: Change the partition type (extended, swap (physical temp memory area), ext4, ext2) this is the t letter to be entered in front of "Command (m for help);"
+            TPC: TP code (L = list types, ext = 05, swap = 82)
+            TPM: TP message
+        fdisk /dev/sda
+        CL: o
+        CR: "Created a new DOS disklabel with disk identifier 0x38d91548."
+        CL: n
+        PT: p
+        PN: 1
+        FS: [ENTER key]
+        LS: +17G
+        CR: "Created a new partition 1 of type 'Extended' and of size 17 GiB"
+        CL: t
+        TP: 8E
+        TPM: "Change type of partition 'Extended' to 'Linux LVM'"
+        CL: i
+        CL: w
+        
+        Create an LVM physical volume on the new partition:
+            pvcreate /dev/sda1
+            If you get this error message: "WARNING: dos signature detected on /dev/sda1 at offset 510. Wipe it? [y/n]:"
+                enter Y
+                press the [ENTER key]
+        Create a volume group:
+            vgcreate vg1 /dev/sda1
+        
+        Create the logical volumes for prepping the disk for the installation:
+            lvcreate -L 400M -n boot vg1
+            lvcreate -L 9G -n root vg1
+            lvcreate -L 500M -n swap vg1
+            lvcreate -l 100%FREE -n home vg1
+            If you get warnings, with a "[y/n]" prpmpt enter "y" and press the [ENTER key]
+            If you need to delete an LVM partition: (based on this tutorial: https://www.addictivetips.com/ubuntu-linux-tips/delete-linux-lvm-volumes/)
+                display the lvm partitions:
+                    lvdisplay
+                Find the VG name of the LV name you wish to remove
+                Enter "lvremove <VG name>/<LV name>" and press the [ENTER key]
+
+    list the disks: fdisk -l
+    formating the logical volumes to their appropriate format
+        mkfs.ext4 /dev/vg1/root #"root" sda2 == sda6
+        mkfs.ext4 /dev/vg1/home #"home" sda4 == sda8
+        mkfs.ext2 /dev/vg1/boot #"boot" sda1 == sda5
+        mkswap /dev/vg1/swap    #"swap" sda3 == sda7
+        swapon /dev/vg1/swap
+    mount the disks:
+        mount /dev/vg1/root /mnt
+        mkdir /mnt/boot /mnt/var /mnt/home
+        mount /dev/vg1/boot /mnt/boot
+        mount /dev/vg1/home /mnt/home
+    Installing arch_linux:
+        pacman -Syy
+        pacstrap /mnt base base-devel linux linux-firmware nano emacs dhcpcd net-tools grub
+    Gnerating a table system:
+        genfstab -U /mnt >> /mnt/etc/fstab
+    setting up the base system:
+        arch-chroot /mnt
+        nano /etc/locale.gen
+        commeted (if wasn't) en_US.UTF-8 UTF-8 
+        uncommented fr_FR.UTF-8 UTF-8
+        uncommented fr_FR@euro ISO-8SO-8859-15
+        uncommented en_GB.UTF-8  UTF-8
+    left  ctrl + s
+    left  ctrl + x
+    generating keymap:
+        locale-gen
+    setting up langage:
+        echo LANG=en_GB.UTF-8 > /etc/locale.conf
+        export LANG=en_GB.UTF-8
+    setting the keyboard layout (this is for arch):
+        echo KEYMAP=fr > /etc/vconsole.conf
+        echo KEYMAP=fr >> /etc/locale.conf
+    set the local_time_zone:
+        ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+    setting up the Hardware clock:
+        hwclock --systohc --utc
+    setting up the username:
+        echo my_client_<your_name>-pc > /etc/hostname
+        In my case:
+            echo my_client_henry_letellier-pc > /etc/hostname
+    enabling the dhcpcd:
+        systemctl enable dhcpcd
+    setting up the root account:
+        passwd root (this is the password setter for the root account)
+    adding a new user:
+        useradd -m -g users -G wheel -s /bin/bash <account_name>
+    setting the passwd:
+        passwd <the_account_on_wich_you_wish_to_set_the_password>
+        in my case:
+            #useradd -m -g users -G wheel -s /bin/bash test
+            #passwd test
+            #useradd -m -g users -G wheel -s /bin/bash henry
+            #passwd henry
+            useradd -m -g users -G wheel -s /bin/bash romain
+            passwd romain
+            useradd -m -g users -G wheel -s /bin/bash leslie
+            passwd leslie
+    Creating the required groups:
+        Using page: https://wiki.archlinux.fr/Utilisateurs_et_Groupes
+        If you wish to create a group:
+            groupadd <group>
+        In our case:
+            groupadd managers
+            groupadd epitech
+        If you wish to delete a groupe:
+            groupedel <group_name>
+
+    Assigning users to groups:
+        If you wish to display the groups and their respective users:
+            cat /etc/group | less
+        If you wisch to add a user to a group:
+            gpasswd -a <username> <group1>
+        If you wish to add many groups to one user simultaniously:
+            usermod -aG <group1>,<group2> <username>
+        In our case:
+            usermod -aG managers,epitech romain 
+            usermod -aG adm,epitech leslie 
+        If you wish to remove a user from a group:
+            gpasswd -d <user> <group>
+        
+    To add a user with full rights:
+        create an account:
+            useradd -m -g users -G wheel -s /bin/bash <account_name>
+            passwd <account_name>
+        open sudoers:
+            nano /etc/sudoers
+                in sudoers:
+                    write on a new line
+                    <account_name> ALL=(ALL) ALL
+                in my case:
+                    (just under the line: root ALL=(ALL) ALL)
+                    romain ALL=(ALL) ALL
+                    #henry ALL=(ALL) ALL
+    How to show the existing accounts:
+        cat /etc/passwd | less
+
+    Installing grub:
+        grub-install /dev/sda
+        pacman -Sy lvm2
+        If it refuses to install:
+            grub-install /dev/sda --force
+        grub-mkconfig -o /boot/grub/grub.cfg
+        open the mkinitcpio.conf file:
+            nano /etc/mkinitcpio.conf
+        replace this line in the file "HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)":
+            With "HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)"
+        regenerate the image of initramfs:
+            mkinitcpio -p linux
+        exit
+    preparing for reboot:
+        umount /mnt/boot
+        umount /mnt/home
+        umount /mnt
+        If you do not know wich drives are still mounted, enter: mount -l
+    rebooting:
+        reboot
+
+    If you receive this message:
+        'Last login: Tue Jan 25 22:54:15 on tty1'
+        ' -- romain: /home/romain: change directory failed: No such file or directory'
+        'Loggin in with home = "/"'
+        try:
+            logout
+            (log in as root)
+            cd /home
+            mkdir romain
+            mkdir leslie
+            logout
+            You can now log bask into the previous account you wished to access.
+
+    Intermediate part: lets fix  few issues (if they still occur)
+        logged in with the root account
+        I don't know why, but generally, when the machine boots up, the default keyboard stays US and has not changed to FR
+            go to your account
+                go into your bashrc
+                    add at the bottom of the file:
+                        sudo loadkeys fr-latin1
+                        add a new line
+                        save [left CTRL] + S
+                        exit [left CTRL] + X
+        Changing the langage from french to english:
+            select the langage from the list:
+                sudo nano /etc/locale.gen
+            generate a new lngge with:
+                sudo locale-gen
+                    Uncomment the langage you wish
+                        I uncommented en_GB.UTF-8 UTF-8
+            reboot
+                
+    
+    Part 2: installing XFCe in archinux
+        logged in with the root account.
+        If you have a bash you wish to run from a key:
+            To mount a key, poweroff the machie using the command "poweroff"
+                If you are in virtualbox:
+                    "settings" > "USB"
+                    In "USB", make sure that "Enable USB Controller" is checked.
+                    In "USB Device Filters" find the usb with a + on it:
+                        from the options that just appeared, (if you key is a flash drive), it will be listed as "Generic Mass Storage [<a_number_ade_of_4_digits>]" 
+                        Once clicked, you should see the name of the device you just clicked and t should be checked.
+                        Click the "ok" button when you have finished with the settings
+                        If you wish to ask virtualbox ti nit track the key anymore, in the "settings" > "USB" > "USB Device Filters" uncheck your device then click the "ok" button to confirm your choices.
+            You can now boot the machine.
+            In the account in wich you choose to mount the key, create a folder with its name:
+                In my case, the folder name will be "savior"
+                    mkdir /mnt/savior
+            You can now mount the key in the folder you just created using this command (PS/ your usb key can be displayed using fdsik -l):
+                mount -t vfat /dev/sdb1 /mnt/savior
+            navigate to the folder you created to access the content of the key
+            copy your file you wish from the key to the computer
+                In our case it will be "install_xfce.sh"
+            As our file if a bash script we will need to give it rights:
+                chmod 777 your file
+                In our case:
+                    chamid 777 install_xfce.sh
+            Do not forget !!!!!!!!!!!!!!!!!!!!!!!:
+                Once you have finished using the key, use:
+                    umount /dev/sdb1
+                    to unmount the usb key.
+
+        If you do not have the file on a usb, you can always download it using this command:
+            If you are logged in as root, run :
+                pacman  -Sy --noconfirm curl
+            otherwise, if this is not the case, add 'sudo' in front of the next three lines.
+            Then run:
+                curl -o "install_xfce.sh" "https://raw.githubusercontent.com/HenraL/arch_linux_installation/main/sh/install_xfce.sh"
+                a shorter version:
+                    curl -L -o "install_xfce.sh" "https://bit.ly/install_xfce_on_arch"
+            Don't forget to give it execution rights:
+                chmod 777 install_xfce.sh
+                
+        Installing Xorg:
+            sudo pacman -S --needed xorg
+        Installing additional components and applications
+            sudo pacman -S --needed xfce4 mousepad parole ristretto thunar-archive-plugin thunar-media-tags-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-netload-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screensaver xfce4-taskmanager xfce4-wavelan-plugin xfce4-weather-plugin xfce4-whiskermenu-plugin xfce4-xkb-plugin file-roller network-manager-applet leafpad epdfview galculator lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings capitaine-cursors arc-gtk-theme xdg-user-dirs-gtk
+        Installing goodies because it could contain stuff that we did not install
+            sudo pacman -S --needed xfce4-goodies
+                There was more interresting stuff
+        Installing some compatibility helpers for communication between virtualbox and the computer
+            sudo pacman -S --needed virtualbox-guest-utils xf86-video-vmware
+        Installing an SSH protcol: This is the website of the concerned protocol: https://www.openssh.com/
+
+        Enabeling the display manager and network manager as service so that they run on next login:
+            systemctl enable lightdm
+            systemctl enable NetworkManager
+        rebooting the system to apply changes:
+            reboot
+        For further requirements, run the config_users_env.sh in an adccount that has the same rights as root (a sudoer) but that is not root.
+    At this moment it is required to power off the machine.
+
+    How to make/import a safe copy of your virtual system :
+    It is recommended to (if using a virtual machine) to export a copy of your machine (for virtualbox it will be in the ova form and can be found when clicking on (Tools icon) Tools --> Export)
+        In the new window, choosing your virtual machine
+        clicking next
+        checking the box Include ISO image files
+            This will ensure that it can do a rollback more easally if needed.
+        clicking next
+        possibly adding info in the sections of the next window
+        and then clicking the export button.
+        wait for it to export and you now have a copy of your virtual machine
+    To import an instance of a machine, (if in virtualbox) it is going to (Tools icon) Tools --> import
+        In the window that just opened clicking the brown folder with a green arrow
+        clicking next
+        possibly checking the info on the next screen
+        clicking import
+        wait for it to import and you now have loaded into virtualbox an instance of your saved system.
+
+    Intermediate part , setting up Debian iso for boot:
+        go to Storage:
+        In Controller: IDE:
+            remove the current iso (into the iso)
+        click on the disk with a +
+        in the new window
+        click the disk with add to load a new iso (the debian one)
+        once the iso is loaded, go back to System
+            In Boot Order:
+                move (Optical above Hard Disk)
+                then close the settings window by clicking the ok button
+        Once done, start the VM, by clicking on the green arrow
+
+    Part 3.1 Debian (The non graphical installation version)
+        Note to me: This installation part is almost complete, it just needs a few twigs.
+        When booting the machine, choose the second option (The text is "Install")
+        This will lead you to an old-like window display (grey background on a blue border background)
+        On the main screen choose the french langage
+        On the second screen set your geographical location
+            If you are doing the epitech boot, choose "Autre"
+                The next window will ask for more detail on the the continent you are in (Africa, Asia, Europe, Indian ocean, etc)
+                For epitech, we will choose "Asie"
+                The next screen will display the coutrys of the given continent.
+                For epitech, we will choose "Chine"
+            else:
+                go to the next step
+        If the system was unable to locate the keyboard charset, the next window will ask you for it
+            For epitech we will choose: fr_FR.UTF-8
+            In this context, the next window will ask for the keyboard layout,
+            For epitech we will use "Français"
+        The next series of windows will be Debian setting up its info
+        The next window of interest will be Debian asking for our computer name
+            You can give it the name you wish, but for Epitech I will set it to my-client-<your-name>
+        The next window will be Debian asking for a domain name:
+            You can name it as you wish, but for Epitech I will set it to my-client-<your-name>.<a_domain_name>
+                In my case it will be my-client-<your-name>.com
+        The next window is a prompt asking you to set the password for the root.
+        below the entry line there is a checkbox accompagned with the text "Afficher le mot de passe en clair"
+        once done, you can hiw the [DOWN ARROW KEY] until the text "<continuer>" is highited in red
+        The following window, will ask you to confirm the entered password of the previous window.
+        [KEY WORD]: 
+            "compte utilisateur" : display name of the account (requires a name),
+            "Identifiant": account (different from the previous word) and can only contain lowercases and numbers,
+            "mot de passe": Password
+
+        The following window will as you to create a user account, 
+            feel free to name it as you wish, I will name it with <my_name>
+            once done, press the [ENTER] key
+        The next window will be the "Identifiant" that will be the name displayed on the login page and in software
+            For epitech, for the henry_letellier account it will be hl.
+        Once these two steps out of the way, create your password for the account that you have just created
+        Then confirm that password in the newt window
+
+        After a bit more pf auto configuration by debian in the next window
+
+        The next window will be very important for the dualboot because it is about disk allocation
+        If your are not following the epitech installation, you can use this part:
+                as we wich to install Debian alongside arch, we will choose the option "Manuel"
+            The next window will ask us how we wich to fragment the disk in order to install Debian alongside Arch
+            For this I will choose "Partitionnement assisté"
+            Then I will use "Assisté - utiliser le plus grand espace disponible"
+            In the next window of options I will choose the "Tout dans une partitio 'recommandé pour les débutants)"
+            After a bit of work, the next window will display the partitions after the changes have been loaded (but not applied)
+            The debian disk should appear like this 'n° 2  primaire  21.6 GB f ext4 /' it should be the last one in the list of disks, all the others should be the ones on wich arch linux has been installed. */
+        else if you are following the epitech partitioning, I strngly recommend you follow this section:
+            use the arrow keys to navigate to the "Espace libre section"
+            Press enter
+            choose "Créer une nouvelle partition"
+
+            #In "Nouvelle taille de la parition" replace "19.3GB" by "5.6GB"
+            #The next windpw will ask us for the type of the partition, choose: "Logique"
+            #The next question is where we wish to place the parition (beginig/end), choose: "Fin"
+            #Let it do its work
+            #In the next window, the information of the partition is displayed
+            #If the "Point de montage" is not "/" then go to it, press the [ENTER key]
+            #    In the newly displayed window, choose "/ - système de fichiers racine"
+            #Once done, you can navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+            In "n° 1         524.3 MB  F swap    swap"
+            In "Utiliser comme : espace d'échange (' swap ') " press the [ENTER key]
+                Choose the option: "Ne pas utiliser la partition"
+            Now choose the option "Fin du paramétrage de cette partition"
+
+            Back on the "Partitionner les disques" screen, navigate to "Partitionnement assisté" and press the [ENTER key]
+            Go to "espace disponible" and press the [ENTER key]
+            Choose the "Créer une nouvelle partition" and press the [ENTER key]
+            Replace "19.3GB" by "10.0GB" and press the [ENTER key]
+            Chose "Logique" when prompted
+            Choose "Fin" and press the [ENTER key]
+            In "Point de montage :" make sure that it is labeld as root "/"
+            If this is not the case, navigate to it, press the [ENTER key] and choose "/ - sytème de fichiers racine", press the [ENTER key]
+            Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+            Back in the "Partitionner les disques" screen go to "espace libre" and press the [ENTER key]
+            Choose the "Créer une nouvelle partition" and press the [ENTER key]
+            Replace "9.3GB" by "4.5GB" and press the [ENTER key]
+            whenever prompted between "logique" and "primaire", choose "logique"
+            Choose "Fin" and press the [ENTER key]
+            In "Point de montage :" make sure that it is labeld as root "/home"
+            If this is not the case, navigate to it, press the [ENTER key] and choose "/home - répertoire personnels des utilisateurs", press the [ENTER key]
+            Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+            In the screen "Partitionner les disques" go to "espace libre" and press the [ENTER key]
+            Choose the "Créer une nouvelle partition" and press the [ENTER key]
+            Replace "4.8GB" by "500MB" and press the [ENTER key]
+            Choose "Fin" and press the [ENTER key]
+            In "Point de montage :" make sure that it is labeld as root "/boot"
+            If this is not the case, navigate to it, press the [ENTER key] and choose "/boot - fichiers statiques du programme de démarrage", press the [ENTER key]
+            Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+            In the "Partitionner les disques" screen go to "espace libre" and press the [ENTER key]
+            Choose the "Créer une nouvelle partition" and press the [ENTER key]
+            Replace "4.3GB" by "500MB" and press the [ENTER key]
+            Choose "Fin" and press the [ENTER key]
+            In the next screen navigage to "Utiliser comme :" and press the [ENTER key]
+            In the new menu choose the "espace d'échange (swap)" option and press the [ENTER key]
+            Once done, navigate to "Fin du paramétrage de cette partition" and press the [ENTER key]
+
+        Navigate to the "Terminer le partitionnement et appliquer les changements" and press the [ENTER key]
+
+        The next window will ask us to confirm that we wish to apply the changes to the disk.
+            Use the arrows to get to the "<Oui>" button.
+        
+        Let it do its work
+        
+        The next window will ask us if we wish it to annalyse if other systems are installed on the drive, and if it should adapt to the launcher
+            For this window we will choose "<oui>"
+        The next window will inform us that that label has already been analised
+            For this we will choose the "<Non>" option to inform the system that we have annalised all the other disks that needed to be annalysed.
+        
+        The next window will ask us for our geographical location to know wich paquet manager to use.
+            In that case, we will choose France (because that is where I am based and running the installation)
+                Then, in the next window, we will choose the by default option that is "deb.debian.org"
+        If you wish to use a proxy, this is what you can configure in this next window
+            In my case I will not be using it.
+                So I will leave the field empty and click continue.
+        
+        Let debian do it's work until the next question window
+        
+        You might receive an error notification "Impossible d'accéder au dépôt"
+            For this choose the "<continuer>" and press the [ENTER key]
+                Later you can check the packet manager later on in (/etc/apt/sources.list).
+
+        The next window will be debian asking us if it can anonymously gather information on our paquet download and send it to https://popcon.debian.org/
+            Feel free to choose the option you like
+                However, if you wish to change your choice later on, you can run the 'dpkg-reconfigure' or 'popularity-contest' or 'dpkg-reconfigure popularity-contest'
+        
+        Let it run until the next window
+
+        This window will be able to choose different system installation
+            for this I will choose (the default because I do not know how to select a checkbox in this graphical version)
+                To wich I will choose (using the spacebar to select checkboxes):
+                    * Cinamon
+                    * serveur ssh
+                    * environnement de bureau Debian
+                    * utilisataires usuels du système
+                I will also choose to remove GNOME
+            Once you have made your choice, you can hit the enter key to confirm your choice
+        
+        Let it do its job until the next window
+        
+        After a while, the next promp is going to ask us if we would like to add Debian to the boot manager in the startup screen.
+            I will choose "<oui>"
+        The next window, will ask us where we wish to install this program
+            For this one we will choose the "/dev/sda ([...])" option, (the '[...]' correspond to it's ID to wich I chose not to copy)
+        
+        Let it work until we get to the next window
+
+        The next window is a question about the time and how we wish to configure it
+            For this we will choose the "<oui>" option
+        
+        Now, the installation is complete, we will thus, edject our iso image, then reboot
+            For people using virtualbox, it has automaticaly been edjected.
+
+        let it run.
+        once rebooted, you are free to choose the system you wish to boot on.
+
+        If you chose to boot on debian, click on your account
+            Then locate the small cog on the bottom right of the screen
+                In the option menu choose Cinamon
+    Part 3.2: Creating the user accounts
+        log into debian as root
+        Creating the required groups:
+            For this I will use the same commands as in the arch linux
+                groupadd pedago
+                groupadd epitech
+                groupadd students
+        Creating the users:
+            I will create the epitech required users:
+                useradd -m -g users -G epitech -s /bin/bash hadrien
+                passwd hadrien
+                useradd -m -g users -G epitech -s /bin/bash vincent
+                passwd vincent
+                useradd -m -g users -G epitech -s /bin/bash luc
+                passwd luc
+        Assigining groups to users:
+            I will assing the groups to the epitech users:
+                usermod -aG pedago,epitech hadrien
+                usermod -aG pedago,epitech vincent
+                usermod -aG students,epitech luc
+        Giving the same rights to hadrien and to vincent:
+            For this I will be giving the group "pedago" the admin rights:
+                I will thus open the file "/etc/sudoers" with "nano":
+                    And add the line  to the section.
+                        %pedago ALL=(ALL) ALL
+
+        Removing the the unnecessary account:
+            The account you created as a user during the installation is not necessary anymore.
+            we shall now remove it.
+                userdel -r <the_user_you_created>
+                    In my case it will be:
+                        userdel -r henry_letellier
+        
+        Applying changes:
+            You can now "reboot" the system in order to make sure the changes have been applied.
+
+        You can now logg in with any account you wish.
+
+In Machine 2:
+    When launched, let it do its thing and get ready
+    as no specifications on how to use the installer has been given, I will then proceed the normal wayn the way you are expected to use it
+    So, once the system installer has booted up it will display a series of langages.
+    As there are no requirements for the langage to be usedn I will therefore use english (UK)
+        feel free to use any langage that pleases you, but all my instructions will contain the english names
+    Once the langage selected, the next window (if an update is available (wich is my case)) the window will offer you the choice of updateing the installer,  continuing without updating or to go back)
+        I will update the installer, newer = better (often)
+        please note that for this update, the system will need an access to the internet
+    after a bit of work, the system reboots and prompts us with two scroll-down menus:
+        The first one is for the keybord layout wich for me is french
+        The second one is the variant (AZERTY, QWERTY, etc) which for me is French - French (AZERTY)
+        If you are to lazy to search the scroll-downs, there is an option wich is [identify keyboard]
+        Once your choice done, go to the done option (bottom of screen) and press enter
+        after a bit of work
+        the installer wll prompt us with the connection page, wich in a VM will be eth (short for ethernet)
+            It will also show you your DHCPV4 whichi is the id of your server (not the IP), basicaly it is a door to allow other computers to connect to it.
+        If lost, you always have the shell access of the ssh help to guide you a bit throug your actions.
+        Meanwhile, I will go find a tutorial to beeter understand how to make the good connections
+        and opn the right ports.
+        

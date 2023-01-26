@@ -1,0 +1,28 @@
+[00:00:01] Arch Linux
+root: HHHH
+test: hhh
+romain: Romain
+henry: Henry
+leslie: Leslie
+
+[00:01:00] Debian
+
+root: HhH
+henry_letellier: 
+    [account name]: henry_letellier
+    [display name]: Henry_Letellier
+    [password]: hletellier
+
+luc: Luc
+hadrien: Hadrien
+vincent: Vincent
+
+
+[00:02:00] Ubuntu server:
+    [mysql passwords]:
+        [root account]: @R00tAccountt%
+    
+    [phpmyadmin passwords]:
+        [phpmyadmin account]:
+            [MySQL database name]: phpmyadmin
+            [password]: @PHPMeAdmin00%

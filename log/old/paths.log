@@ -1,0 +1,22 @@
+[logs for the paths of some elements in the system]
+[NetworkManager] :  
+                    1: symlink: 
+                        from: /etc/systemd/system/multi-user.target.wants/NetworkManager.service
+                        to:   /usr/lib/systemd/system/NetworkManager.service
+                        commented version of the name: CNetworkManager.service
+                    2: symlink
+                        from: /etc/systemd/system/dbus-org.freedesktop.nm-dispatcher.service
+                        to: /usr/lib/systemd/system/NetworkManager-dispatcher.service
+                        commented version of the name: CNetworkManager-dispatcher.service
+                    3: symlink
+                        from: /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service
+                        to: /usr/lib/systemd/system/NetworkManager-wait-online.service
+                        commented version of the name: CNetworkManager-wait-online.service
+[lightdm] :
+                    1: symlink
+                        from: /etc/systemd/system/display-manager.service
+                        to: /usr/lib/systemd/system/lightdm.service
+                        commented version of the name: Clightdm.service
+
+bash to comment: 
+bash to uncomment: 
