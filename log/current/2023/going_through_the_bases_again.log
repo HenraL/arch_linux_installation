@@ -605,6 +605,12 @@ In Machine 1:
             You can now "reboot" the system in order to make sure the changes have been applied.
 
         You can now log in with any account you wish.
+        
+    Cross-mounting the disks:
+        Boot into arch
+            lsblk to list all the partitions
+            identify your debian partitions
+                In the arch create a 
 
 In Machine 2:
     Make sure the ubuntu server iso is present in the Optical drive bay.
