@@ -619,8 +619,12 @@ In Machine 2:
         start the machine
             Wait for it to boot up
             Go through the installation process (transcribe video: 2023-01-24 14-52-37.mkv)
-        Search for my videos for apache installation
-        Search for my videos for ufw management
+            (
+             You can also just follow the digital ocean tutorial on how to install apache2, it is very good: 
+             https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04
+            )
+        Search for my videos for apache installation (or just follow the above mentioned tutorial)
+        Search for my videos for ufw management      (enable ufw by running ufw enable, use ufw allow <port>/tcp and/or ufw allow <port>/udp for allowing a port)
 
         Installing mySQL: (following tutorial at: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-22-04)
             Keep the system updated:
